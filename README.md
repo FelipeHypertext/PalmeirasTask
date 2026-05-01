@@ -7,6 +7,7 @@
 ## 📁 Árvore de Pastas e Arquivos
 
 ```
+
 palmeiras-tasks/
 │
 ├── index.php                        # Redireciona para login ou dashboard
