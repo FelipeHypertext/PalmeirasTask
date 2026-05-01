@@ -8,6 +8,7 @@
 
 ```
 
+
 palmeiras-tasks/
 │
 ├── index.php                        # Redireciona para login ou dashboard
