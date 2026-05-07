@@ -68,18 +68,19 @@ palmeiras-tasks/
 ### `config/db.php`
 ```php
 <?php
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');           // Padrão XAMPP — altere se necessário
-define('DB_NAME', 'palmeiras_tasks');
 
-$conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+function conectar() {
+    $conn = new mysqli("localhost", "root", "", "palmeirasdb");
 
-if (!$conn) {
-    die('Erro na conexão com o banco: ' . mysqli_connect_error());
+    /*Caso dê algum erro na conexão*/
+    if ($conn->connect_error) {
+        die("Erro de conexão: " . $conn->connect_error);
+    }
+    /*Configura a codificação*/
+    $conn->set_charset("utf8");
+    return $conn;
 }
 
-mysqli_set_charset($conn, 'utf8');
 ?>
 ```
 
@@ -88,58 +89,61 @@ mysqli_set_charset($conn, 'utf8');
 ## 🗃️ Estrutura das Tabelas (`sql/banco.sql`)
 
 ```sql
-CREATE DATABASE IF NOT EXISTS palmeiras_tasks CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE palmeiras_tasks;
+CREATE DATABASE IF NOT EXISTS palmeirasdb
+    CHARACTER SET utf8
+    COLLATE utf8_general_ci;
 
--- Usuários (técnico = admin, jogadores = member)
-CREATE TABLE users (
-    id          INT AUTO_INCREMENT PRIMARY KEY,
-    name        VARCHAR(100)  NOT NULL,
-    email       VARCHAR(150)  NOT NULL UNIQUE,
-    password    VARCHAR(255)  NOT NULL,
-    role        ENUM('admin', 'member') DEFAULT 'member',
-    position    VARCHAR(100),           -- Ex: Atacante, Goleiro
-    avatar      VARCHAR(255),
-    created_at  DATETIME DEFAULT CURRENT_TIMESTAMP
+USE palmeirasdb;
+
+-- TABELA: Usuarios
+CREATE TABLE usuarios (
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    nome       VARCHAR(100)  NOT NULL,
+    email      VARCHAR(150)  NOT NULL UNIQUE,
+    senha   VARCHAR(255)  NOT NULL,
+    cargo       ENUM('admin', 'membro') DEFAULT 'membro',
+    posicao   VARCHAR(100),           -- Ex: Atacante, Goleiro
+    avatar     VARCHAR(255),
+    criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tarefas
-CREATE TABLE tasks (
+-- TABELA: Tarefas
+CREATE TABLE tarefas (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    titulo       VARCHAR(200) NOT NULL,
+    description TEXT,
+    status      ENUM('pendente', 'em_andamento', 'concluida') DEFAULT 'pendente',
+    prazo    DATE,
+    criado_por  INT NOT NULL,   -- FK → usuarios.id
+    designado_para INT NOT NULL,   -- FK → usuarios.id
+    criado_em  DATETIME DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em  DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (criado_por)  REFERENCES usuarios(id),
+    FOREIGN KEY (designado_para) REFERENCES usuarios(id)
+);
+
+-- TABELA: Comentários
+CREATE TABLE comentarios (
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    id_tarefa    INT  NOT NULL,
+    id_usuario    INT  NOT NULL,
+    conteudo    TEXT NOT NULL,
+    criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_tarefa) REFERENCES tarefas(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
+);
+
+-- TABELA: Histórico das tarefas
+CREATE TABLE historico_tarefas (
     id            INT AUTO_INCREMENT PRIMARY KEY,
-    title         VARCHAR(200) NOT NULL,
-    description   TEXT,
-    status        ENUM('pendente', 'em_andamento', 'concluida') DEFAULT 'pendente',
-    deadline      DATE,
-    created_by    INT NOT NULL,          -- FK users.id
-    assigned_to   INT NOT NULL,          -- FK users.id
-    created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (created_by)  REFERENCES users(id),
-    FOREIGN KEY (assigned_to) REFERENCES users(id)
-);
-
--- Comentários
-CREATE TABLE comments (
-    id          INT AUTO_INCREMENT PRIMARY KEY,
-    task_id     INT  NOT NULL,
-    user_id     INT  NOT NULL,
-    content     TEXT NOT NULL,
-    created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
--- Histórico de alterações
-CREATE TABLE task_history (
-    id           INT AUTO_INCREMENT PRIMARY KEY,
-    task_id      INT          NOT NULL,
-    changed_by   INT          NOT NULL,
-    field_changed VARCHAR(100) NOT NULL,   -- Ex: 'status', 'description'
-    old_value    TEXT,
-    new_value    TEXT,
-    changed_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (task_id)    REFERENCES tasks(id) ON DELETE CASCADE,
-    FOREIGN KEY (changed_by) REFERENCES users(id)
+    id_tarefa       INT          NOT NULL,
+    atualizado_por    INT          NOT NULL,
+    campo_atualizado VARCHAR(100) NOT NULL,   -- Ex: 'status', 'titulo'
+    valor_antigo     TEXT,
+    valor_novo     TEXT,
+    atualizado_em    DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_tarefa)   REFERENCES tarefas(id) ON DELETE CASCADE,
+    FOREIGN KEY (atualizado_por) REFERENCES usuarios(id)
 );
 
 -- Usuário admin padrão (técnico — senha: admin123)

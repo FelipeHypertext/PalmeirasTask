@@ -5,74 +5,78 @@
 -- COMO USAR   : Abra o phpMyAdmin > aba SQL > cole este arquivo
 -- ============================================================
 
-CREATE DATABASE IF NOT EXISTS palmeiras_tasks
+CREATE DATABASE IF NOT EXISTS palmeirasdb
     CHARACTER SET utf8
     COLLATE utf8_general_ci;
 
-USE palmeiras_tasks;
+USE palmeirasdb;
 
 -- ----------------------------------------------------------
--- TABELA: users
--- Armazena técnico (admin) e jogadores (member)
+-- TABELA: Usuarios
+-- Armazena técnico (admin) e jogadores (membro)
 -- ----------------------------------------------------------
-CREATE TABLE users (
+CREATE TABLE usuarios (
     id         INT AUTO_INCREMENT PRIMARY KEY,
-    name       VARCHAR(100)  NOT NULL,
+    nome       VARCHAR(100)  NOT NULL,
     email      VARCHAR(150)  NOT NULL UNIQUE,
-    password   VARCHAR(255)  NOT NULL,
-    role       ENUM('admin', 'member') DEFAULT 'member',
-    position   VARCHAR(100),           -- Ex: Atacante, Goleiro
+    senha   VARCHAR(255)  NOT NULL,
+    cargo       ENUM('admin', 'membro') DEFAULT 'membro',
+    posicao   VARCHAR(100),           -- Ex: Atacante, Goleiro
     avatar     VARCHAR(255),
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ----------------------------------------------------------
--- TABELA: tasks
--- Armazena as tarefas do Kanban
+-- TABELA: Tarefas
+-- Armazena as tarefas do Gerenciador
 -- ----------------------------------------------------------
-CREATE TABLE tasks (
+CREATE TABLE tarefas (
     id          INT AUTO_INCREMENT PRIMARY KEY,
-    title       VARCHAR(200) NOT NULL,
+    titulo       VARCHAR(200) NOT NULL,
     description TEXT,
     status      ENUM('pendente', 'em_andamento', 'concluida') DEFAULT 'pendente',
-    deadline    DATE,
-    created_by  INT NOT NULL,   -- FK → users.id
-    assigned_to INT NOT NULL,   -- FK → users.id
-    created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at  DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (created_by)  REFERENCES users(id),
-    FOREIGN KEY (assigned_to) REFERENCES users(id)
+    prazo    DATE,
+    criado_por  INT NOT NULL,   -- FK → usuarios.id
+    designado_para INT NOT NULL,   -- FK → usuarios.id
+    criado_em  DATETIME DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em  DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (criado_por)  REFERENCES usuarios(id),
+    FOREIGN KEY (designado_para) REFERENCES usuarios(id)
 );
+-- UPDATE CURRENT_TIMESTAMP atualiza automaticamente a coluna quando houver ação UPDATE
 
 -- ----------------------------------------------------------
--- TABELA: comments
+-- TABELA: Comentários
 -- Comentários vinculados a uma tarefa
 -- ----------------------------------------------------------
-CREATE TABLE comments (
+CREATE TABLE comentarios (
     id         INT AUTO_INCREMENT PRIMARY KEY,
-    task_id    INT  NOT NULL,
-    user_id    INT  NOT NULL,
-    content    TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    id_tarefa    INT  NOT NULL,
+    id_usuario    INT  NOT NULL,
+    conteudo    TEXT NOT NULL,
+    criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_tarefa) REFERENCES tarefas(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
 );
+-- DELETE CASCADE é uma regra da chave estrangeira, na qual a tabela pai seja apagada essa tabela também sumirá.
 
 -- ----------------------------------------------------------
--- TABELA: task_history
+-- TABELA: Histórico das tarefas
 -- Histórico de cada alteração feita em uma tarefa
 -- ----------------------------------------------------------
-CREATE TABLE task_history (
+CREATE TABLE historico_tarefas (
     id            INT AUTO_INCREMENT PRIMARY KEY,
-    task_id       INT          NOT NULL,
-    changed_by    INT          NOT NULL,
-    field_changed VARCHAR(100) NOT NULL,   -- Ex: 'status', 'title'
-    old_value     TEXT,
-    new_value     TEXT,
-    changed_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (task_id)   REFERENCES tasks(id) ON DELETE CASCADE,
-    FOREIGN KEY (changed_by) REFERENCES users(id)
+    id_tarefa       INT          NOT NULL,
+    atualizado_por    INT          NOT NULL,
+    campo_atualizado VARCHAR(100) NOT NULL,   -- Ex: 'status', 'title'
+    valor_antigo     TEXT,
+    valor_novo     TEXT,
+    atualizado_em    DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_tarefa)   REFERENCES tarefas(id) ON DELETE CASCADE,
+    FOREIGN KEY (atualizado_por) REFERENCES usuarios(id)
 );
+
+-- Área de Teste
 
 -- ----------------------------------------------------------
 -- DADOS INICIAIS
@@ -81,6 +85,6 @@ CREATE TABLE task_history (
 --    php -r "echo password_hash('admin123', PASSWORD_DEFAULT);"
 -- Depois substitua o hash abaixo pelo gerado
 -- ----------------------------------------------------------
-INSERT INTO users (name, email, password, role, position) VALUES
-('Técnico Abel', 'admin@palmeiras.com',
- '$2y$10$SUBSTITUA_ESTE_HASH_PELO_GERADO_NO_PHP', 'admin', 'Técnico');
+-- INSERT INTO usuarios (nome, email, senha, cargo, posicao) VALUES
+-- ('Técnico Abel', 'admin@palmeiras.com',
+-- '$2y$10$SUBSTITUA_ESTE_HASH_PELO_GERADO_NO_PHP', 'admin', 'Técnico');
