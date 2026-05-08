@@ -22,7 +22,8 @@ CREATE TABLE usuarios (
     senha   VARCHAR(255)  NOT NULL,
     cargo       ENUM('admin', 'membro') DEFAULT 'membro',
     posicao   VARCHAR(100),           -- Ex: Atacante, Goleiro
-    avatar     VARCHAR(255),
+    avatar          VARCHAR(255)  DEFAULT NULL,
+    lembrar_cookie  VARCHAR(64)   DEFAULT NULL, -- COOKIE LEMBRAR 30 DIAS
     criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -88,3 +89,5 @@ CREATE TABLE historico_tarefas (
 -- INSERT INTO usuarios (nome, email, senha, cargo, posicao) VALUES
 -- ('Técnico Abel', 'admin@palmeiras.com',
 -- '$2y$10$SUBSTITUA_ESTE_HASH_PELO_GERADO_NO_PHP', 'admin', 'Técnico');
+-- INSERT INTO usuarios (nome, email, senha, cargo, posicao) VALUES
+-- ('Técnico Abel', 'admin@palmeiras.com', '$2b$10$CFOqX9nWJlCIrsqzaygad.rJvDwKiPBLlvecyR5MO/2wOAKIgEc0.', 'admin', 'Técnico');

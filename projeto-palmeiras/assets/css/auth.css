@@ -1,0 +1,283 @@
+
+:root {
+    --verde:        #006B3F;
+    --verde-escuro: #004d2c;
+    --verde-claro:  #e6f4ed;
+    --branco:       #FFFFFF;
+    --cinza:        #f4f4f4;
+    --cinza-borda:  #d0d0d0;
+    --cinza-texto:  #555555;
+    --vermelho:     #c0392b;
+    --verde-sucesso:#1e7e34;
+    --sombra:       0 4px 20px rgba(0, 107, 63, 0.15);
+    --radius:       10px;
+}
+
+/* ── Layout base da tela de autenticação ────────────────────── */
+.auth-body {
+    background: linear-gradient(135deg, var(--verde-escuro) 0%, var(--verde) 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
+}
+
+/* ── Card central do formulário ─────────────────────────────── */
+.auth-container {
+    background: var(--branco);
+    border-radius: var(--radius);
+    box-shadow: var(--sombra);
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 420px;
+    animation: auth-entrada 0.35s ease;
+}
+
+.auth-container--register {
+    max-width: 500px;
+}
+
+@keyframes auth-entrada {
+    from {
+        opacity: 0;
+        transform: translateY(-18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Logo e cabeçalho ───────────────────────────────────────── */
+.auth-logo {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.auth-logo img {
+    width: 80px;
+    height: auto;
+    margin-bottom: 10px;
+    /* Fallback caso a imagem não carregue ainda */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.auth-logo h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--verde);
+    margin: 0 0 4px;
+}
+
+.auth-subtitulo {
+    color: var(--cinza-texto);
+    font-size: 0.88rem;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.auth-cabecalho {
+    margin-bottom: 24px;
+}
+
+.auth-cabecalho h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--verde);
+    margin: 0 0 6px;
+}
+
+.auth-cabecalho p {
+    font-size: 0.88rem;
+    color: var(--cinza-texto);
+    margin: 0;
+}
+
+/* ── Mensagens de erro e sucesso ────────────────────────────── */
+.auth-erro,
+.auth-sucesso {
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.auth-erro {
+    background-color: #fdecea;
+    border-left: 4px solid var(--vermelho);
+    color: var(--vermelho);
+}
+
+.auth-sucesso {
+    background-color: #eaf7ee;
+    border-left: 4px solid var(--verde-sucesso);
+    color: var(--verde-sucesso);
+}
+
+/* ── Campos do formulário ───────────────────────────────────── */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.auth-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.auth-campo label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.auth-campo input[type="text"],
+.auth-campo input[type="email"],
+.auth-campo input[type="password"],
+.auth-campo select {
+    padding: 11px 14px;
+    border: 1.5px solid var(--cinza-borda);
+    border-radius: 7px;
+    font-size: 0.95rem;
+    color: #222;
+    background: var(--cinza);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.auth-campo input:focus,
+.auth-campo select:focus {
+    border-color: var(--verde);
+    box-shadow: 0 0 0 3px rgba(0, 107, 63, 0.12);
+    background: var(--branco);
+}
+
+.auth-campo input::placeholder {
+    color: #aaa;
+}
+
+/* ── Campo obrigatório ──────────────────────────────────────── */
+.obrigatorio {
+    color: var(--vermelho);
+    margin-left: 2px;
+}
+
+/* ── Checkbox "lembrar-me" ──────────────────────────────────── */
+.auth-lembrar {
+    margin-top: -6px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    color: var(--cinza-texto);
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--verde);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* ── Botões ─────────────────────────────────────────────────── */
+.btn-primario {
+    background-color: var(--verde);
+    color: var(--branco);
+    border: none;
+    border-radius: 7px;
+    padding: 13px 20px;
+    font-size: 0.97rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primario:hover {
+    background-color: var(--verde-escuro);
+}
+
+.btn-primario:active {
+    transform: scale(0.98);
+}
+
+.btn-secundario {
+    background-color: transparent;
+    color: var(--verde);
+    border: 1.5px solid var(--verde);
+    border-radius: 7px;
+    padding: 11px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-secundario:hover {
+    background-color: var(--verde-claro);
+}
+
+.btn-bloco {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ── Ações (botões no cadastro) ─────────────────────────────── */
+.auth-acoes {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+/* ── Página de registro com header: ajusta padding ──────────── */
+.auth-main {
+    padding: 40px 20px;
+    background: var(--cinza);
+    min-height: calc(100vh - 120px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.auth-main .auth-container {
+    margin-top: 0;
+    animation: none;
+}
+
+/* ── Responsividade ─────────────────────────────────────────── */
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 28px 20px;
+    }
+
+    .auth-logo img {
+        width: 64px;
+    }
+
+    .auth-logo h2 {
+        font-size: 1.15rem;
+    }
+}

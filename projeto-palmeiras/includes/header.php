@@ -1,6 +1,6 @@
 <?php
     // Detecta se o usuário é admin para exibir menu de admin
-    $isAdmin = isset($_SESSION['cargo']) === 'admin';
+    $isAdmin = isset($_SESSION['cargo']) && $_SESSION['cargo'] === 'admin';
     $nomeUsuario = htmlspecialchars($_SESSION['nome_usuario'] ?? 'Visitante');
 ?>
 
