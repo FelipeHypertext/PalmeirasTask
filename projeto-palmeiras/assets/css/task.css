@@ -1,0 +1,260 @@
+
+/* =====================================================
+   CONTAINER GERAL DAS PÁGINAS DE TAREFA
+   ===================================================== */
+.task-container {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 0 20px 40px;
+}
+
+.task-titulo {
+    font-size: 1.6rem;
+    color: var(--verde, #006B3F);
+    border-bottom: 3px solid var(--verde, #006B3F);
+    padding-bottom: 8px;
+    margin-bottom: 24px;
+}
+
+/* =====================================================
+   MENSAGENS DE FEEDBACK (erro / sucesso)
+   ===================================================== */
+.task-msg {
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+.task-msg--erro {
+    background-color: #ffe0e0;
+    color: #c0392b;
+    border-left: 4px solid #c0392b;
+}
+
+.task-msg--sucesso {
+    background-color: #d4f7e0;
+    color: #1a6b3a;
+    border-left: 4px solid var(--verde, #006B3F);
+}
+
+/* =====================================================
+   FORMULÁRIO DE CRIAR / EDITAR TAREFA
+   ===================================================== */
+.task-form {
+    background-color: var(--branco, #FFFFFF);
+    border-radius: 10px;
+    padding: 28px 32px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.task-form__grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.task-form__grupo label {
+    font-size: 0.92rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.task-form__grupo input[type="text"],
+.task-form__grupo input[type="date"],
+.task-form__grupo textarea,
+.task-form__grupo select {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: var(--cinza, #f4f4f4);
+    color: #333;
+    transition: border-color 0.2s;
+    font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.task-form__grupo input:focus,
+.task-form__grupo textarea:focus,
+.task-form__grupo select:focus {
+    outline: none;
+    border-color: var(--verde, #006B3F);
+    background-color: #fff;
+}
+
+.task-form__grupo textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+/* Asterisco de campo obrigatório */
+.obrigatorio {
+    color: #c0392b;
+    margin-left: 2px;
+}
+
+/* Ações do formulário (botões) */
+.task-form__acoes {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+
+/* =====================================================
+   BOTÕES REUTILIZÁVEIS
+   ===================================================== */
+.btn {
+    display: inline-block;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: opacity 0.2s, background-color 0.2s;
+}
+
+.btn:hover {
+    opacity: 0.88;
+}
+
+.btn--verde {
+    background-color: var(--verde, #006B3F);
+    color: var(--branco, #FFFFFF);
+}
+
+.btn--cinza {
+    background-color: #aaa;
+    color: var(--branco, #FFFFFF);
+}
+
+.btn--vermelho {
+    background-color: #c0392b;
+    color: var(--branco, #FFFFFF);
+}
+
+/* =====================================================
+   TELA DE CONFIRMAÇÃO DE EXCLUSÃO
+   ===================================================== */
+.task-confirm {
+    background-color: var(--branco, #FFFFFF);
+    border-radius: 10px;
+    padding: 32px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.task-confirm p {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.task-confirm__nome {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--verde, #006B3F);
+}
+
+.task-confirm__aviso {
+    font-size: 0.88rem;
+    color: #888;
+    margin-bottom: 24px !important;
+}
+
+.task-confirm__form {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+/* =====================================================
+   CARD DE TAREFA (usado no Kanban do Israel)
+   ===================================================== */
+.task-card {
+    background-color: var(--branco, #FFFFFF);
+    border-radius: 8px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 14px;
+    border-left: 5px solid var(--verde, #006B3F);
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+}
+
+.task-card:hover {
+    box-shadow: 0 3px 12px rgba(0, 107, 63, 0.2);
+}
+
+.task-card__titulo {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 6px;
+}
+
+.task-card__responsavel {
+    font-size: 0.85rem;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.task-card__responsavel img {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--verde, #006B3F);
+}
+
+.task-card__prazo {
+    font-size: 0.82rem;
+    color: #777;
+    margin-top: 8px;
+}
+
+/* Badge de prazo vencido */
+.task-card__prazo--vencido {
+    color: #c0392b;
+    font-weight: bold;
+}
+
+/* Borda colorida por status (complementa o Israel no dashboard.css) */
+.task-card--pendente     { border-left-color: #f39c12; }
+.task-card--em_andamento { border-left-color: #2980b9; }
+.task-card--concluida    { border-left-color: var(--verde, #006B3F); }
+
+/* =====================================================
+   RESPONSIVIDADE
+   ===================================================== */
+@media (max-width: 600px) {
+    .task-container {
+        padding: 0 12px 30px;
+    }
+
+    .task-form {
+        padding: 20px 16px;
+    }
+
+    .task-form__acoes {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
