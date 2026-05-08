@@ -103,7 +103,8 @@ CREATE TABLE usuarios (
     senha   VARCHAR(255)  NOT NULL,
     cargo       ENUM('admin', 'membro') DEFAULT 'membro',
     posicao   VARCHAR(100),           -- Ex: Atacante, Goleiro
-    avatar     VARCHAR(255),
+    avatar          VARCHAR(255)  DEFAULT NULL,
+    lembrar_cookie  VARCHAR(64)   DEFAULT NULL,
     criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 

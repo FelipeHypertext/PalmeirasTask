@@ -7,6 +7,7 @@ require_once '../includes/session_check.php';
 // CHAMA A FUNÇÃO DO SESSION_CHECK E GARANTE QUE APENAS UM USUÁRIO COM CARGO ADMIN POSSA FAZER O CADASTRO
 verificarAdmin();
 
+//INICIALIZA AS VARIAVEIS
 $erro    = '';
 $sucesso = '';
 
@@ -39,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $conn = conectar();
 
-        // Verifica se e-mail já está cadastrado
+        // VERIFICA SE O EMAIL JÁ ESTÁ CADASTRADO
         $stmtCheck = $conn->prepare("SELECT id FROM usuarios WHERE email = ?");
         $stmtCheck->bind_param('s', $email);
         $stmtCheck->execute();
@@ -48,10 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmtCheck->num_rows > 0) {
             $erro = 'Este e-mail já está cadastrado.';
         } else {
-            // Hash seguro da senha
+            // HASH SEGURO DA SENHA
             $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
-            // Insere o novo usuário
+            // INSERE NOVO USUARIO (? é um placeholder)
             $stmtInsert = $conn->prepare(
                 "INSERT INTO usuarios (nome, email, senha, cargo, posicao) VALUES (?, ?, ?, ?, ?)"
             );
