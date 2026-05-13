@@ -2,6 +2,7 @@
     session_start();
     require_once("../config/db.php");
     require_once("../includes/session_check.php");
+    verificarSessao();
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">

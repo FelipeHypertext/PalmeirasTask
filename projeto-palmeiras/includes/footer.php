@@ -1,3 +1,3 @@
 <footer>
-    <small>Gerenciador do Palmeiras - <? date("Y") ?> </small>
+    <small>Gerenciador do Palmeiras - <?= date("Y") ?> </small>
 </footer>
