@@ -1,50 +1,51 @@
 <?php
-
 session_start();
 require_once '../includes/session_check.php';
 require_once '../config/db.php';
 require_once '../history/log.php';
 
+verificarSessao();
+
+$conn = conectar();
+
 $erro    = '';
 $sucesso = '';
 
-// Recebe o ID da tarefa via GET
-$task_id    = (int) ($_GET['id'] ?? 0);
-$usuario_id = (int) $_SESSION['user_id'];
-$role       = $_SESSION['role'] ?? 'member';
+$id_tarefa  = (int) ($_GET['id'] ?? 0);
+$id_usuario = (int) $_SESSION['id_usuario'];
+$cargo      = $_SESSION['cargo'] ?? 'membro';
 
 // Valida se o ID foi informado
-if ($task_id <= 0) {
+if ($id_tarefa <= 0) {
     header('Location: ../dashboard/index.php');
     exit;
 }
 
 // Busca os dados atuais da tarefa
-$sql_task = "SELECT * FROM tasks WHERE id = ?";
-$stmt_task = mysqli_prepare($conn, $sql_task);
-mysqli_stmt_bind_param($stmt_task, 'i', $task_id);
-mysqli_stmt_execute($stmt_task);
-$resultado = mysqli_stmt_get_result($stmt_task);
-$tarefa    = mysqli_fetch_assoc($resultado);
-mysqli_stmt_close($stmt_task);
+$stmt_tarefa = $conn->prepare("SELECT * FROM tarefas WHERE id = ?");
+$stmt_tarefa->bind_param('i', $id_tarefa);
+$stmt_tarefa->execute();
+$tarefa = $stmt_tarefa->get_result()->fetch_assoc();
+$stmt_tarefa->close();
 
 // Tarefa não encontrada
 if (!$tarefa) {
+    $conn->close();
     header('Location: ../dashboard/index.php');
     exit;
 }
 
 // Verifica permissão: somente o criador ou o admin podem editar
-if ($role !== 'admin' && (int)$tarefa['created_by'] !== $usuario_id) {
+if ($cargo !== 'admin' && (int)$tarefa['criado_por'] !== $id_usuario) {
+    $conn->close();
     header('Location: ../dashboard/index.php');
     exit;
 }
 
-// Busca todos os jogadores (members) para o <select>
-$q_usuarios = "SELECT id, name, position FROM users WHERE role = 'member' ORDER BY name ASC";
-$res_usuarios = mysqli_query($conn, $q_usuarios);
+// Busca todos os jogadores (membros) para o <select>
+$res_usuarios = $conn->query("SELECT id, nome, posicao FROM usuarios WHERE cargo = 'membro' ORDER BY nome ASC");
 $usuarios = [];
-while ($linha = mysqli_fetch_assoc($res_usuarios)) {
+while ($linha = $res_usuarios->fetch_assoc()) {
     $usuarios[] = $linha;
 }
 
@@ -64,43 +65,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($novo_responsavel <= 0) {
         $erro = 'Selecione um responsável para a tarefa.';
     } else {
-        // Registra alterações no histórico apenas dos campos que mudaram
-        if ($tarefa['title'] !== $novo_titulo) {
-            logHistory($conn, $task_id, 'title', $tarefa['title'], $novo_titulo);
+        // Registra no histórico apenas os campos que mudaram
+        if ($tarefa['titulo'] !== $novo_titulo) {
+            logHistory($conn, $id_tarefa, 'titulo', $tarefa['titulo'], $novo_titulo);
         }
         if ($tarefa['description'] !== $nova_descricao) {
-            logHistory($conn, $task_id, 'description', $tarefa['description'], $nova_descricao);
+            logHistory($conn, $id_tarefa, 'description', $tarefa['description'], $nova_descricao);
         }
-        if ($tarefa['deadline'] !== $novo_prazo) {
-            logHistory($conn, $task_id, 'deadline', $tarefa['deadline'], $novo_prazo);
+        if ($tarefa['prazo'] !== $novo_prazo) {
+            logHistory($conn, $id_tarefa, 'prazo', $tarefa['prazo'], $novo_prazo);
         }
-        if ((int)$tarefa['assigned_to'] !== $novo_responsavel) {
-            logHistory($conn, $task_id, 'assigned_to', (string)$tarefa['assigned_to'], (string)$novo_responsavel);
+        if ((int)$tarefa['designado_para'] !== $novo_responsavel) {
+            logHistory($conn, $id_tarefa, 'designado_para', (string)$tarefa['designado_para'], (string)$novo_responsavel);
         }
 
         // Atualiza a tarefa no banco
-        $sql_upd = "UPDATE tasks
-                    SET title = ?, description = ?, deadline = ?, assigned_to = ?
-                    WHERE id = ?";
-        $stmt_upd = mysqli_prepare($conn, $sql_upd);
-        mysqli_stmt_bind_param($stmt_upd, 'sssii', $novo_titulo, $nova_descricao, $novo_prazo, $novo_responsavel, $task_id);
+        $stmt_upd = $conn->prepare(
+            "UPDATE tarefas SET titulo = ?, description = ?, prazo = ?, designado_para = ? WHERE id = ?"
+        );
+        $stmt_upd->bind_param('sssii', $novo_titulo, $nova_descricao, $novo_prazo, $novo_responsavel, $id_tarefa);
 
-        if (mysqli_stmt_execute($stmt_upd)) {
-            // Atualiza os dados locais para refletir no formulário
-            $tarefa['title']       = $novo_titulo;
-            $tarefa['description'] = $nova_descricao;
-            $tarefa['deadline']    = $novo_prazo;
-            $tarefa['assigned_to'] = $novo_responsavel;
+        if ($stmt_upd->execute()) {
+            $tarefa['titulo']          = $novo_titulo;
+            $tarefa['description']     = $nova_descricao;
+            $tarefa['prazo']           = $novo_prazo;
+            $tarefa['designado_para']  = $novo_responsavel;
 
             $sucesso = 'Tarefa atualizada com sucesso!';
-            header('Refresh: 1; url=../tasks/view.php?id=' . $task_id);
+            header('Refresh: 1; url=../tasks/view.php?id=' . $id_tarefa);
         } else {
             $erro = 'Erro ao atualizar a tarefa. Tente novamente.';
         }
 
-        mysqli_stmt_close($stmt_upd);
+        $stmt_upd->close();
     }
 }
+
+$conn->close();
 
 $titulo_pagina = 'Editar Tarefa';
 require_once '../includes/header.php';
@@ -117,7 +118,7 @@ require_once '../includes/header.php';
         <p class="task-msg task-msg--sucesso"><?= $sucesso ?></p>
     <?php endif; ?>
 
-    <form class="task-form" action="edit.php?id=<?= $task_id ?>" method="post">
+    <form class="task-form" action="edit.php?id=<?= $id_tarefa ?>" method="POST">
 
         <div class="task-form__grupo">
             <label for="titulo">Título <span class="obrigatorio">*</span></label>
@@ -126,7 +127,7 @@ require_once '../includes/header.php';
                 id="titulo"
                 name="titulo"
                 maxlength="200"
-                value="<?= htmlspecialchars($_POST['titulo'] ?? $tarefa['title']) ?>"
+                value="<?= htmlspecialchars($_POST['titulo'] ?? $tarefa['titulo']) ?>"
                 required
             >
         </div>
@@ -146,7 +147,7 @@ require_once '../includes/header.php';
                 type="date"
                 id="prazo"
                 name="prazo"
-                value="<?= htmlspecialchars($_POST['prazo'] ?? $tarefa['deadline']) ?>"
+                value="<?= htmlspecialchars($_POST['prazo'] ?? $tarefa['prazo']) ?>"
                 required
             >
         </div>
@@ -156,15 +157,15 @@ require_once '../includes/header.php';
             <select id="responsavel" name="responsavel" required>
                 <option value="">-- Selecione um jogador --</option>
                 <?php
-                $responsavel_atual = (int) ($_POST['responsavel'] ?? $tarefa['assigned_to']);
+                $responsavel_atual = (int) ($_POST['responsavel'] ?? $tarefa['designado_para']);
                 foreach ($usuarios as $u):
                 ?>
                     <option
                         value="<?= $u['id'] ?>"
                         <?= ((int)$u['id'] === $responsavel_atual) ? 'selected' : '' ?>
                     >
-                        <?= htmlspecialchars($u['name']) ?>
-                        <?= !empty($u['position']) ? '(' . htmlspecialchars($u['position']) . ')' : '' ?>
+                        <?= htmlspecialchars($u['nome']) ?>
+                        <?= !empty($u['posicao']) ? '(' . htmlspecialchars($u['posicao']) . ')' : '' ?>
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -172,7 +173,7 @@ require_once '../includes/header.php';
 
         <div class="task-form__acoes">
             <button type="submit" class="btn btn--verde">Salvar Alterações</button>
-            <a href="../tasks/view.php?id=<?= $task_id ?>" class="btn btn--cinza">Cancelar</a>
+            <a href="../tasks/view.php?id=<?= $id_tarefa ?>" class="btn btn--cinza">Cancelar</a>
         </div>
 
     </form>

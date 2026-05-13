@@ -1,60 +1,66 @@
-<?php 
+<?php
 session_start();
 require_once '../includes/session_check.php';
 require_once '../config/db.php';
 require_once '../history/log.php';
+
+verificarSessao();
+
+$conn = conectar();
+
 $erro = '';
 $sucesso = '';
 
-//Busca todos jogadores p/ o select de atribuir
-$query_usuarios = "SELECT id, name, position FROM users WHERE role = 'member' ORDER BY name ASC";
-$resultado_usuarios = mysqli_query($conn, $query_usuarios);
+// Busca todos jogadores para o select de atribuir
+$query_usuarios = "SELECT id, nome, posicao FROM usuarios WHERE cargo = 'membro' ORDER BY nome ASC";
+$resultado_usuarios = $conn->query($query_usuarios);
 $usuarios = [];
-while ($linha = mysqli_fetch_assoc($resultado_usuarios)){
+while ($linha = $resultado_usuarios->fetch_assoc()) {
     $usuarios[] = $linha;
 }
-//Processamento do formulario via POST
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $titulo      = trim(htmlspecialchars($_POST['titulo']     ??  ''));
-    $descricao   = trim(htmlspecialchars($_POST['descricao']  ??  ''));
-    $prazo       = trim(htmlspecialchars($_POST['prazo']      ??  ''));
-    $responsavel = (int) ($_POST['responsavel'] ?? 0);
-    $criado_por  = (int) $_SESSION['user_id'];
 
-    //Validação básica
-    if(empty($titulo)) {
+// Processamento do formulário via POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $titulo      = trim(htmlspecialchars($_POST['titulo']    ?? ''));
+    $descricao   = trim(htmlspecialchars($_POST['descricao'] ?? ''));
+    $prazo       = trim(htmlspecialchars($_POST['prazo']     ?? ''));
+    $responsavel = (int) ($_POST['responsavel'] ?? 0);
+    $criado_por  = (int) $_SESSION['id_usuario'];
+
+    // Validação básica
+    if (empty($titulo)) {
         $erro = 'O título da tarefa é obrigatório.';
     } elseif (empty($prazo)) {
         $erro = 'O prazo é obrigatório.';
     } elseif ($responsavel <= 0) {
         $erro = 'Selecione um responsável para a tarefa.';
     } else {
-        //Insere a tarefa no banco
-        $sql = "INSERT INTO tasks (title, description, status, deadline, created_by, assigned_to) VALUES (?, ?, 'pendente', ?, ?, ?)";
-        
-        $stmt = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, 'sssii', $titulo, $descricao, $prazo, $criado_por, $responsavel);
+        $sql  = "INSERT INTO tarefas (titulo, description, status, prazo, criado_por, designado_para) VALUES (?, ?, 'pendente', ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('sssii', $titulo, $descricao, $prazo, $criado_por, $responsavel);
 
-        if(mysqli_stmt_execute($stmt)){
-            $novo_id = mysqli_insert_id($conn);
+        if ($stmt->execute()) {
+            $novo_id = $conn->insert_id;
 
-            //Registra no historico
+            // Registra no histórico
             logHistory($conn, $novo_id, 'criacao', '', "Tarefa '{$titulo}' criada com status 'pendente'");
 
             $sucesso = 'Tarefa criada com sucesso!';
-
-            //Redireciona para o dashboard após 1s via meta refresh
             header('Refresh: 1; url=../dashboard/index.php');
         } else {
             $erro = 'Erro ao criar a tarefa. Tente novamente.';
         }
 
-        mysqli_stmt_close($stmt);
+        $stmt->close();
     }
 }
+
+$conn->close();
+
 $titulo_pagina = 'Criar Tarefa';
 require_once '../includes/header.php';
 ?>
+
 <main class="task-container">
     <h2 class="task-titulo">Nova Tarefa</h2>
 
@@ -66,7 +72,7 @@ require_once '../includes/header.php';
         <p class="task-msg task-msg--sucesso"><?= $sucesso ?></p>
     <?php endif; ?>
 
-    <form class="task-form" action="create.php" method="post">
+    <form class="task-form" action="create.php" method="POST">
 
         <div class="task-form__grupo">
             <label for="titulo">Título <span class="obrigatorio">*</span></label>
@@ -111,8 +117,8 @@ require_once '../includes/header.php';
                         value="<?= $u['id'] ?>"
                         <?= (isset($_POST['responsavel']) && (int)$_POST['responsavel'] === (int)$u['id']) ? 'selected' : '' ?>
                     >
-                        <?= htmlspecialchars($u['name']) ?>
-                        <?= !empty($u['position']) ? '(' . htmlspecialchars($u['position']) . ')' : '' ?>
+                        <?= htmlspecialchars($u['nome']) ?>
+                        <?= !empty($u['posicao']) ? '(' . htmlspecialchars($u['posicao']) . ')' : '' ?>
                     </option>
                 <?php endforeach; ?>
             </select>

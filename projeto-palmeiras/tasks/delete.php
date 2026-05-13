@@ -1,32 +1,35 @@
 <?php
-
 session_start();
 require_once '../includes/session_check.php';
 require_once '../config/db.php';
 
+verificarSessao();
+
 // Somente admin pode excluir tarefas
-if (($_SESSION['role'] ?? '') !== 'admin') {
+if (($_SESSION['cargo'] ?? '') !== 'admin') {
     header('Location: ../dashboard/index.php');
     exit;
 }
 
-// --- Tela de confirmação (GET) ---
+$conn = conectar();
+
+// ── Tela de confirmação (GET) ──
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    $task_id = (int) ($_GET['id'] ?? 0);
+    $id_tarefa = (int) ($_GET['id'] ?? 0);
 
-    if ($task_id <= 0) {
+    if ($id_tarefa <= 0) {
+        $conn->close();
         header('Location: ../dashboard/index.php');
         exit;
     }
 
-    $sql_get = "SELECT id, title FROM tasks WHERE id = ?";
-    $stmt_get = mysqli_prepare($conn, $sql_get);
-    mysqli_stmt_bind_param($stmt_get, 'i', $task_id);
-    mysqli_stmt_execute($stmt_get);
-    $res_get = mysqli_stmt_get_result($stmt_get);
-    $tarefa  = mysqli_fetch_assoc($res_get);
-    mysqli_stmt_close($stmt_get);
+    $stmt = $conn->prepare("SELECT id, titulo FROM tarefas WHERE id = ?");
+    $stmt->bind_param('i', $id_tarefa);
+    $stmt->execute();
+    $tarefa = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+    $conn->close();
 
     if (!$tarefa) {
         header('Location: ../dashboard/index.php');
@@ -41,11 +44,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         <div class="task-confirm">
             <p>Tem certeza que deseja excluir a tarefa:</p>
-            <p class="task-confirm__nome">"<?= htmlspecialchars($tarefa['title']) ?>"</p>
+            <p class="task-confirm__nome">"<?= htmlspecialchars($tarefa['titulo']) ?>"</p>
             <p class="task-confirm__aviso">Esta ação não pode ser desfeita.</p>
 
-            <form action="delete.php" method="post" class="task-confirm__form">
-                <input type="hidden" name="task_id" value="<?= $tarefa['id'] ?>">
+            <form action="delete.php" method="POST" class="task-confirm__form">
+                <input type="hidden" name="id_tarefa" value="<?= $tarefa['id'] ?>">
                 <button type="submit" class="btn btn--vermelho">Sim, excluir</button>
                 <a href="../tasks/view.php?id=<?= $tarefa['id'] ?>" class="btn btn--cinza">Cancelar</a>
             </form>
@@ -55,42 +58,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     require_once '../includes/footer.php';
     exit;
 
-// --- Execução da exclusão (POST) ---
+// ── Execução da exclusão (POST) ──
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $task_id = (int) ($_POST['task_id'] ?? 0);
+    $id_tarefa = (int) ($_POST['id_tarefa'] ?? 0);
 
-    if ($task_id <= 0) {
+    if ($id_tarefa <= 0) {
+        $conn->close();
         header('Location: ../dashboard/index.php');
         exit;
     }
 
-    // Verifica se a tarefa existe antes de excluir
-    $sql_check  = "SELECT id FROM tasks WHERE id = ?";
-    $stmt_check = mysqli_prepare($conn, $sql_check);
-    mysqli_stmt_bind_param($stmt_check, 'i', $task_id);
-    mysqli_stmt_execute($stmt_check);
-    $res_check = mysqli_stmt_get_result($stmt_check);
-    $existe    = mysqli_fetch_assoc($res_check);
-    mysqli_stmt_close($stmt_check);
+    // Verifica se a tarefa existe
+    $stmt_check = $conn->prepare("SELECT id FROM tarefas WHERE id = ?");
+    $stmt_check->bind_param('i', $id_tarefa);
+    $stmt_check->execute();
+    $stmt_check->store_result();
+    $existe = $stmt_check->num_rows > 0;
+    $stmt_check->close();
 
     if (!$existe) {
+        $conn->close();
         header('Location: ../dashboard/index.php');
         exit;
     }
 
-    // O ON DELETE CASCADE no banco remove automaticamente
-    // os comentários e o histórico vinculados a esta tarefa.
-    $sql_del  = "DELETE FROM tasks WHERE id = ?";
-    $stmt_del = mysqli_prepare($conn, $sql_del);
-    mysqli_stmt_bind_param($stmt_del, 'i', $task_id);
+    // ON DELETE CASCADE no banco remove automaticamente comentários e histórico
+    $stmt_del = $conn->prepare("DELETE FROM tarefas WHERE id = ?");
+    $stmt_del->bind_param('i', $id_tarefa);
 
-    if (mysqli_stmt_execute($stmt_del)) {
-        mysqli_stmt_close($stmt_del);
+    if ($stmt_del->execute()) {
+        $stmt_del->close();
+        $conn->close();
         header('Location: ../dashboard/index.php');
         exit;
     } else {
-        mysqli_stmt_close($stmt_del);
+        $stmt_del->close();
+        $conn->close();
 
         $titulo_pagina = 'Erro ao Excluir';
         require_once '../includes/header.php';
@@ -105,3 +109,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         exit;
     }
 }
+?>
