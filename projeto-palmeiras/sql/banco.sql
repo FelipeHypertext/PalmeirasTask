@@ -1,20 +1,7 @@
--- ============================================================
--- RESPONSÁVEL : João
--- ORDEM       : #1 — Fazer primeiro (todos dependem deste arquivo)
--- DESCRIÇÃO   : Criação do banco de dados e todas as tabelas
--- COMO USAR   : Abra o phpMyAdmin > aba SQL > cole este arquivo
--- ============================================================
-
 CREATE DATABASE IF NOT EXISTS palmeirasdb
     CHARACTER SET utf8
     COLLATE utf8_general_ci;
-
 USE palmeirasdb;
-
--- ----------------------------------------------------------
--- TABELA: Usuarios
--- Armazena técnico (admin) e jogadores (membro)
--- ----------------------------------------------------------
 CREATE TABLE usuarios (
     id         INT AUTO_INCREMENT PRIMARY KEY,
     nome       VARCHAR(100)  NOT NULL,
@@ -26,11 +13,6 @@ CREATE TABLE usuarios (
     lembrar_cookie  VARCHAR(64)   DEFAULT NULL, -- COOKIE LEMBRAR 30 DIAS
     criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
 );
-
--- ----------------------------------------------------------
--- TABELA: Tarefas
--- Armazena as tarefas do Gerenciador
--- ----------------------------------------------------------
 CREATE TABLE tarefas (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     titulo       VARCHAR(200) NOT NULL,
@@ -44,12 +26,6 @@ CREATE TABLE tarefas (
     FOREIGN KEY (criado_por)  REFERENCES usuarios(id),
     FOREIGN KEY (designado_para) REFERENCES usuarios(id)
 );
--- UPDATE CURRENT_TIMESTAMP atualiza automaticamente a coluna quando houver ação UPDATE
-
--- ----------------------------------------------------------
--- TABELA: Comentários
--- Comentários vinculados a uma tarefa
--- ----------------------------------------------------------
 CREATE TABLE comentarios (
     id         INT AUTO_INCREMENT PRIMARY KEY,
     id_tarefa    INT  NOT NULL,
@@ -59,12 +35,6 @@ CREATE TABLE comentarios (
     FOREIGN KEY (id_tarefa) REFERENCES tarefas(id) ON DELETE CASCADE,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
 );
--- DELETE CASCADE é uma regra da chave estrangeira, na qual a tabela pai seja apagada essa tabela também sumirá.
-
--- ----------------------------------------------------------
--- TABELA: Histórico das tarefas
--- Histórico de cada alteração feita em uma tarefa
--- ----------------------------------------------------------
 CREATE TABLE historico_tarefas (
     id            INT AUTO_INCREMENT PRIMARY KEY,
     id_tarefa       INT          NOT NULL,

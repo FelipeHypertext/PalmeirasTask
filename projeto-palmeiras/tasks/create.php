@@ -11,7 +11,6 @@ $conn = conectar();
 $erro = '';
 $sucesso = '';
 
-// Busca todos jogadores para o select de atribuir
 $query_usuarios = "SELECT id, nome, posicao FROM usuarios WHERE cargo = 'membro' ORDER BY nome ASC";
 $resultado_usuarios = $conn->query($query_usuarios);
 $usuarios = [];
@@ -19,7 +18,6 @@ while ($linha = $resultado_usuarios->fetch_assoc()) {
     $usuarios[] = $linha;
 }
 
-// Processamento do formulário via POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $titulo      = trim(htmlspecialchars($_POST['titulo']    ?? ''));
     $descricao   = trim(htmlspecialchars($_POST['descricao'] ?? ''));
@@ -27,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $responsavel = (int) ($_POST['responsavel'] ?? 0);
     $criado_por  = (int) $_SESSION['id_usuario'];
 
-    // Validação básica
     if (empty($titulo)) {
         $erro = 'O título da tarefa é obrigatório.';
     } elseif (empty($prazo)) {
@@ -42,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->execute()) {
             $novo_id = $conn->insert_id;
 
-            // Registra no histórico
             logHistory($conn, $novo_id, 'criacao', '', "Tarefa '{$titulo}' criada com status 'pendente'");
 
             $sucesso = 'Tarefa criada com sucesso!';
@@ -58,8 +54,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $conn->close();
 
 $titulo_pagina = 'Criar Tarefa';
-require_once '../includes/header.php';
 ?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= $titulo_pagina ?> — Palmeiras FC</title>
+    
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/task.css">
+</head>
+<body>
+
+<?php require_once '../includes/header.php'; ?>
 
 <main class="task-container">
     <h2 class="task-titulo">Nova Tarefa</h2>
@@ -133,3 +141,6 @@ require_once '../includes/header.php';
 </main>
 
 <?php require_once '../includes/footer.php'; ?>
+
+</body>
+</html>

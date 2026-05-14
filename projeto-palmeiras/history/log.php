@@ -1,6 +1,6 @@
 <?php
 /**
- * Registra uma alteração no histórico da tarefa.
+ * 
  *
  * @param mysqli $conn           Conexão com o banco de dados
  * @param int    $id_tarefa      ID da tarefa alterada
@@ -10,11 +10,9 @@
  */
 function logHistory(mysqli $conn, int $id_tarefa, string $campo, string $valor_antigo, string $valor_novo): void {
 
-    // Pega o ID do usuário logado da sessão
     $atualizado_por = (int) ($_SESSION['id_usuario'] ?? 0);
 
     if ($atualizado_por <= 0) {
-        // Segurança: não registra se não há sessão válida
         return;
     }
 

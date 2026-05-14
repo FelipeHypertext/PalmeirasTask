@@ -1,148 +1,117 @@
 <?php
-    session_start();
-    require_once("../config/db.php");
-    require_once("../includes/session_check.php");
-    verificarSessao();
+session_start();
+require_once("../config/db.php");
+require_once("../includes/session_check.php");
+
+verificarSessao(); 
+
+$conn = conectar();
+
+$sql = "SELECT t.id, t.titulo, t.description as descr, t.status, t.prazo,
+               u.nome as responsavel_nome, u.posicao,
+               (SELECT COUNT(*) FROM comentarios c WHERE c.id_tarefa = t.id) as total_comentarios
+        FROM tarefas t
+        JOIN usuarios u ON t.designado_para = u.id";
+$result = $conn->query($sql);
+
+$tarefas_banco = [];
+while ($row = $result->fetch_assoc()) {
+    $colMap = [
+        'pendente' => 'pending',
+        'em_andamento' => 'progress',
+        'concluida' => 'done'
+    ];
+    
+    $tagMap = [
+        'Técnico' => 'tecnico', 'Auxiliar Técnico' => 'auxtec',
+        'Preparador Físico' => 'prepfi', 'Treinador de Goleiros' => 'prepgoleiro',
+        'Analista de Desempenho' => 'analista', 'Coordenador Técnico' => 'coordenador'
+    ];
+
+    $tarefas_banco[] = [
+        'id' => $row['id'],
+        'col' => $colMap[$row['status']] ?? 'pending',
+        'title' => $row['titulo'],
+        'desc' => $row['descr'],
+        'tag' => $tagMap[$row['posicao']] ?? 'tecnico', // Fallback de cor
+        'priority' => 'med',
+        'date' => date('d/m', strtotime($row['prazo'])),
+        'comments' => $row['total_comentarios'],
+        'authors' => [['i' => mb_strtoupper(mb_substr($row['responsavel_nome'], 0, 2)), 'c' => 'av-a']]
+    ];
+}
+$conn->close();
+
+$titulo_pagina = 'Dashboard Kanban — Palmeiras FC'; 
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Palmeiras Dashboard</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
-  <link rel="stylesheet" href="style.css">
-  <script src="main.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= $titulo_pagina ?></title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <link rel="stylesheet" href="style.css"> 
+    
+    <script>
+        const TAREFAS_REAIS = <?= json_encode($tarefas_banco) ?>;
+    </script>
+    <script src="main.js" defer></script> 
 </head>
 <body>
- 
-<!-- Topbar -->
-<header class="topbar">
-  <div class="topbar-brand">
-    <i class="ti ti-layout-kanban"></i>
-    Palmeiras Board
-  </div>
-  <div class="topbar-actions">
-    <button class="btn" onclick="openModal('pending')">
-      <i class="ti ti-plus"></i> Nova tarefa
-    </button>
-  </div>
-</header>
- 
-<!-- Page -->
+
+<?php require_once("../includes/header.php"); ?>
+
 <main class="page">
-  <div class="page-header">
+  <div class="page-header" style="margin-bottom: 2rem;">
     <div>
-      <div class="page-title">Gerenciador de tarefas</div>
-      <div class="page-sub" id="sprint-sub">Carregando tarefas…</div>
+      <h2 style="color: var(--verde-escuro); text-transform: uppercase; font-weight: 800;">Gerenciador de tarefas</h2>
+      <div class="page-sub" id="sprint-sub" style="color: var(--cinza-texto); font-weight: 500;">Carregando tarefas…</div>
     </div>
+    
+    <a href="../tasks/create.php" class="btn btn--verde" style="padding: 10px 20px; text-decoration: none;">
+      <i class="ti ti-plus"></i> Nova Tarefa
+    </a>
   </div>
  
-  <!-- Board -->
   <div class="board">
- 
-    <!-- Pendente -->
-    <div class="col" id="col-pending"
-         ondragover="onDragOver(event,'pending')"
-         ondrop="onDrop(event,'pending')"
-         ondragleave="onDragLeave(event)">
+    <div class="col" id="col-pending" ondragover="onDragOver(event,'pending')" ondrop="onDrop(event,'pending')" ondragleave="onDragLeave(event)">
       <div class="col-header">
-        <div class="col-label">
-          <span class="col-dot dot-pending"></span>
-          Pendente
-        </div>
+        <div class="col-label"><span class="col-dot dot-pending"></span>Pendente</div>
         <div style="display:flex;align-items:center;gap:6px">
           <span class="col-badge badge-pending" id="cnt-pending">0</span>
-          <button class="col-add-btn" onclick="openModal('pending')" title="Adicionar tarefa">
-            <i class="ti ti-plus"></i>
-          </button>
+          <a href="../tasks/create.php" class="col-add-btn" style="text-decoration:none;"><i class="ti ti-plus"></i></a>
         </div>
       </div>
       <div class="drop-zone" id="zone-pending"></div>
       <div id="cards-pending"></div>
     </div>
- 
-    <!-- Em andamento -->
-    <div class="col" id="col-progress"
-         ondragover="onDragOver(event,'progress')"
-         ondrop="onDrop(event,'progress')"
-         ondragleave="onDragLeave(event)">
+
+    <div class="col" id="col-progress" ondragover="onDragOver(event,'progress')" ondrop="onDrop(event,'progress')" ondragleave="onDragLeave(event)">
       <div class="col-header">
-        <div class="col-label">
-          <span class="col-dot dot-progress"></span>
-          Em andamento
-        </div>
+        <div class="col-label"><span class="col-dot dot-progress"></span>Em andamento</div>
         <div style="display:flex;align-items:center;gap:6px">
           <span class="col-badge badge-progress" id="cnt-progress">0</span>
-          <button class="col-add-btn" onclick="openModal('progress')" title="Adicionar tarefa">
-            <i class="ti ti-plus"></i>
-          </button>
         </div>
       </div>
       <div class="drop-zone" id="zone-progress"></div>
       <div id="cards-progress"></div>
     </div>
- 
-    <!-- Concluída -->
-    <div class="col" id="col-done"
-         ondragover="onDragOver(event,'done')"
-         ondrop="onDrop(event,'done')"
-         ondragleave="onDragLeave(event)">
+
+    <div class="col" id="col-done" ondragover="onDragOver(event,'done')" ondrop="onDrop(event,'done')" ondragleave="onDragLeave(event)">
       <div class="col-header">
-        <div class="col-label">
-          <span class="col-dot dot-done"></span>
-          Concluída
-        </div>
+        <div class="col-label"><span class="col-dot dot-done"></span>Concluída</div>
         <div style="display:flex;align-items:center;gap:6px">
           <span class="col-badge badge-done" id="cnt-done">0</span>
-          <button class="col-add-btn" onclick="openModal('done')" title="Adicionar tarefa">
-            <i class="ti ti-plus"></i>
-          </button>
         </div>
       </div>
       <div class="drop-zone" id="zone-done"></div>
       <div id="cards-done"></div>
     </div>
- 
   </div>
 </main>
- 
-<!-- Modal nova tarefa -->
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal">
-    <div class="modal-header">
-      <span class="modal-title">Nova tarefa</span>
-      <button class="modal-close" onclick="closeModal()">
-        <i class="ti ti-x"></i>
-      </button>
-    </div>
-    <div class="modal-body">
-      <input  id="m-title"  class="form-input"  type="text" placeholder="Título da tarefa *" />
-      <input  id="m-desc"   class="form-input"  type="text" placeholder="Descrição breve" />
-      <input  id="m-author" class="form-input"  type="text" placeholder="Seu nome *" />
-      <div class="form-row">
-        <select id="m-col" class="form-select">
-          <option value="pending">Pendente</option>
-          <option value="progress">Em andamento</option>
-          <option value="done">Concluída</option>
-        </select>
-        <select id="m-tag" class="form-select">
-          <option value="tecnico">Técnico</option>
-          <option value="auxtec">Auxiliar técnico</option>
-          <option value="prepfi">Preparador físico</option>
-          <option value="prepgoleiro">Treinador de goleiros</option>
-          <option value="analista">Analista de desempenho</option>
-          <option value="coordenador">Coordenador técnico</option>
-        </select>
-        <select id="m-pri" class="form-select">
-          <option value="high">Alta</option>
-          <option value="med">Média</option>
-          <option value="low">Baixa</option>
-        </select>
-      </div>
-      <button class="modal-submit" onclick="createCard()">Criar tarefa</button>
-    </div>
-  </div>
-</div>
+
+<?php require_once("../includes/footer.php"); ?>
 </body>
 </html>

@@ -3,7 +3,6 @@
 session_start();
 require_once '../config/db.php';
 
-// REMOVE O LEMBRAR_COOKIE DO BANCO DE DADOS CASO ELE EXISTA
 if (isset($_COOKIE['lembrar_usuario'])) {
     $conn   = conectar();
     $id_usuario = (int) $_COOKIE['lembrar_usuario'];
@@ -15,11 +14,9 @@ if (isset($_COOKIE['lembrar_usuario'])) {
     $conn->close();
 }
 
-// LIMPA COOKIE DE LEMBRAR ME, EXPIRANDO ELE POR TEMPO
 setcookie('lembrar_cookie', '', time() - 3600, '/');
 setcookie('lembrar_usuario',  '', time() - 3600, '/');
 
-// DESTRÓI A SESSÃO
 $_SESSION = [];
 
 if (ini_get('session.use_cookies')) {
@@ -37,7 +34,6 @@ if (ini_get('session.use_cookies')) {
 
 session_destroy();
 
-// REDICIONAR AO LOGIN
 header('Location: login.php');
 exit;
 ?>

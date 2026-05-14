@@ -4,14 +4,11 @@ session_start();
 require_once '../config/db.php';
 require_once '../includes/session_check.php';
 
-// CHAMA A FUNÇÃO DO SESSION_CHECK E GARANTE QUE APENAS UM USUÁRIO COM CARGO ADMIN POSSA FAZER O CADASTRO
 verificarAdmin();
 
-//INICIALIZA AS VARIAVEIS
 $erro    = '';
 $sucesso = '';
 
-// POST DO FORMULÁRIO
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $nome    = validaInput($_POST['nome']    ?? '');
@@ -21,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $senha   = $_POST['senha']              ?? '';
     $confirma = $_POST['confirma_senha']    ?? '';
 
-    // VALIDAÇÕES
     if (empty($nome) || empty($email) || empty($senha) || empty($confirma)) {
         $erro = 'Preencha todos os campos obrigatórios.';
 
@@ -40,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $conn = conectar();
 
-        // VERIFICA SE O EMAIL JÁ ESTÁ CADASTRADO
         $stmtCheck = $conn->prepare("SELECT id FROM usuarios WHERE email = ?");
         $stmtCheck->bind_param('s', $email);
         $stmtCheck->execute();
@@ -49,10 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmtCheck->num_rows > 0) {
             $erro = 'Este e-mail já está cadastrado.';
         } else {
-            // HASH SEGURO DA SENHA
             $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
-            // INSERE NOVO USUARIO (? é um placeholder)
             $stmtInsert = $conn->prepare(
                 "INSERT INTO usuarios (nome, email, senha, cargo, posicao) VALUES (?, ?, ?, ?, ?)"
             );
@@ -60,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($stmtInsert->execute()) {
                 $sucesso = "Jogador \"$nome\" cadastrado com sucesso!";
-                $nome = $email = $posicao = $cargo = ''; // LIMPA AS VARIAVEIS PARA PROXIMO CADASTRO
+                $nome = $email = $posicao = $cargo = ''; 
             } else {
                 $erro = 'Erro ao cadastrar. Tente novamente.';
             }
@@ -73,7 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// POSIÇÕES DISPONÍVEIS PARA USAR NO SELECT
 $posicoes = [
     'Goleiro', 'Lateral Direito', 'Lateral Esquerdo',
     'Zagueiro', 'Volante', 'Meia', 'Meia-Atacante',
@@ -110,8 +102,6 @@ $posicoes = [
         <?php endif; ?>
 
         <form method="POST" action="register.php" class="auth-form">
-
-            <!-- NOME -->
             <div class="auth-campo">
                 <label for="nome">Nome completo <span class="obrigatorio">*</span></label>
                 <input
@@ -124,8 +114,6 @@ $posicoes = [
                     maxlength="100"
                 >
             </div>
-
-            <!-- EMAIL -->
             <div class="auth-campo">
                 <label for="email">E-mail <span class="obrigatorio">*</span></label>
                 <input
@@ -138,8 +126,6 @@ $posicoes = [
                     maxlength="150"
                 >
             </div>
-
-            <!-- POSIÇÃO -->
             <div class="auth-campo">
                 <label for="posicao">Posição</label>
                 <select id="posicao" name="posicao">
@@ -151,8 +137,6 @@ $posicoes = [
                     <?php endforeach; ?>
                 </select>
             </div>
-
-            <!-- CARGO (ADM OU MEMBRO) -->
             <div class="auth-campo">
                 <label for="cargo">Cargo <span class="obrigatorio">*</span></label>
                 <select id="cargo" name="cargo" required>
@@ -160,8 +144,6 @@ $posicoes = [
                     <option value="admin"  <?= (($cargo ?? '') === 'admin'  ? 'selected' : '') ?>>Admin (Técnico)</option>
                 </select>
             </div>
-
-            <!-- SENHA -->
             <div class="auth-campo">
                 <label for="senha">Senha <span class="obrigatorio">*</span></label>
                 <input
@@ -174,8 +156,6 @@ $posicoes = [
                     autocomplete="new-password"
                 >
             </div>
-
-            <!-- CONFIRMAÇÃO DE SENHA -->
             <div class="auth-campo">
                 <label for="confirma_senha">Confirmar senha <span class="obrigatorio">*</span></label>
                 <input
@@ -188,7 +168,6 @@ $posicoes = [
                     autocomplete="new-password"
                 >
             </div>
-
             <div class="auth-acoes">
                 <button type="submit" class="btn-primario btn-bloco">Cadastrar Jogador</button>
                 <a href="../admin/users.php" class="btn-secundario btn-bloco">Ver todos os jogadores</a>
@@ -198,8 +177,6 @@ $posicoes = [
 
     </div>
 </main>
-
 <?php require_once '../includes/footer.php'; ?>
-
 </body>
 </html>

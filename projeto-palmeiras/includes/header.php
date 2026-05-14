@@ -1,5 +1,4 @@
 <?php
-    // Detecta se o usuário é admin para exibir menu de admin
     $isAdmin = isset($_SESSION['cargo']) && $_SESSION['cargo'] === 'admin';
     $nomeUsuario = htmlspecialchars($_SESSION['nome_usuario'] ?? 'Visitante');
 ?>
@@ -16,7 +15,6 @@
             <ul>
                 <li><a href="../dashboard/index.php">Dashboard</a></li>
                 <li><a href="../tasks/create.php">Nova Tarefa</a></li>
-                <!--Caso seja um usuário admin, terá essas opções extras-->
                 <?php if ($isAdmin): ?>
                     <li><a href="../admin/users.php">Jogadores</a></li>
                     <li><a href="../auth/register.php">Cadastrar</a></li>
