@@ -4,7 +4,7 @@
  * 1. João Felipe Mokdse Costa           - RGM: 43492801
  * 2. Victor Schernikau B. B. Vieira     - RGM: 44050496
  * 3. Max Lopes                          - RGM: 42826381
- * 4. Israel Wendell                     - RGM: [RGM do Israel]
+ * 4. Israel Wendell Cardoso Costa       - RGM: 43905412
  * 5. Eduarda Luiz                       - RGM: 43806414
  * 6. Douglas Menegotti                  - RGM: 37274261
  */
