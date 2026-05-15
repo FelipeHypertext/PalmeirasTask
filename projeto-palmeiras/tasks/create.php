@@ -43,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $sucesso = 'Tarefa criada com sucesso!';
             header('Refresh: 1; url=../dashboard/index.php');
+            exit;
         } else {
             $erro = 'Erro ao criar a tarefa. Tente novamente.';
         }
@@ -90,7 +91,7 @@ $titulo_pagina = 'Criar Tarefa';
                 name="titulo"
                 maxlength="200"
                 placeholder="Ex: Treino tático – Sexta-feira"
-                value="<?= htmlspecialchars($_POST['titulo'] ?? '') ?>"
+                value="<?= $_POST['titulo'] ?? '' ?>"
                 required
             >
         </div>
@@ -102,7 +103,7 @@ $titulo_pagina = 'Criar Tarefa';
                 name="descricao"
                 rows="4"
                 placeholder="Detalhes da tarefa (opcional)"
-            ><?= htmlspecialchars($_POST['descricao'] ?? '') ?></textarea>
+            ><?= $_POST['descricao'] ?? '' ?></textarea>
         </div>
 
         <div class="task-form__grupo">
@@ -111,7 +112,7 @@ $titulo_pagina = 'Criar Tarefa';
                 type="date"
                 id="prazo"
                 name="prazo"
-                value="<?= htmlspecialchars($_POST['prazo'] ?? '') ?>"
+                value="<?= $_POST['prazo'] ?? '' ?>"
                 required
             >
         </div>
@@ -125,8 +126,8 @@ $titulo_pagina = 'Criar Tarefa';
                         value="<?= $u['id'] ?>"
                         <?= (isset($_POST['responsavel']) && (int)$_POST['responsavel'] === (int)$u['id']) ? 'selected' : '' ?>
                     >
-                        <?= htmlspecialchars($u['nome']) ?>
-                        <?= !empty($u['posicao']) ? '(' . htmlspecialchars($u['posicao']) . ')' : '' ?>
+                        <?= $u['nome'] ?>
+                        <?= !empty($u['posicao']) ? '(' . $u['posicao'] . ')' : '' ?>
                     </option>
                 <?php endforeach; ?>
             </select>

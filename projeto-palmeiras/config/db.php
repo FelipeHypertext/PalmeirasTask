@@ -1,6 +1,6 @@
 <?php
 function conectar() {
-    $conn = new mysqli("127.0.0.1", "root", "", "palmeirasdb", 3307);
+    $conn = new mysqli("localhost", "root", "", "palmeirasdb", 3306);
 
     if ($conn->connect_error) {
         die("Erro de conexão: " . $conn->connect_error);

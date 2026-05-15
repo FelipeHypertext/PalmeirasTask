@@ -35,7 +35,7 @@ while ($row = $result->fetch_assoc()) {
         'desc' => $row['descr'],
         'tag' => $tagMap[$row['posicao']] ?? 'tecnico', // Fallback de cor
         'priority' => 'med',
-        'date' => date('d/m', strtotime($row['prazo'])),
+        'date' => $row['prazo'] ? date('d/m', strtotime($row['prazo'])) : '—',
         'comments' => $row['total_comentarios'],
         'authors' => [['i' => mb_strtoupper(mb_substr($row['responsavel_nome'], 0, 2)), 'c' => 'av-a']]
     ];

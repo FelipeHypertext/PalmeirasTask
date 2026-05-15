@@ -64,6 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt_upd->execute()) {
             $sucesso = 'Tarefa atualizada com sucesso!';
             header('Refresh: 1; url=../tasks/view.php?id=' . $id_tarefa);
+            exit;
         } else {
             $erro = 'Erro ao atualizar a tarefa.';
         }
@@ -95,11 +96,11 @@ $titulo_pagina = 'Editar Tarefa';
     <form class="task-form" action="edit.php?id=<?= $id_tarefa ?>" method="POST">
         <div class="task-form__grupo">
             <label for="titulo">Título <span class="obrigatorio">*</span></label>
-            <input type="text" id="titulo" name="titulo" value="<?= htmlspecialchars($tarefa['titulo']) ?>" required>
+            <input type="text" id="titulo" name="titulo" value="<?= $tarefa['titulo'] ?>" required>
         </div>
         <div class="task-form__grupo">
             <label for="descricao">Descrição</label>
-            <textarea id="descricao" name="descricao" rows="4"><?= htmlspecialchars($tarefa['description']) ?></textarea>
+            <textarea id="descricao" name="descricao" rows="4"><?= $tarefa['description'] ?></textarea>
         </div>
         <div class="task-form__grupo">
             <label for="prazo">Prazo <span class="obrigatorio">*</span></label>
@@ -110,7 +111,7 @@ $titulo_pagina = 'Editar Tarefa';
             <select id="responsavel" name="responsavel" required>
                 <?php foreach ($usuarios as $u): ?>
                     <option value="<?= $u['id'] ?>" <?= ((int)$u['id'] === (int)$tarefa['designado_para']) ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($u['nome']) ?> (<?= htmlspecialchars($u['posicao']) ?>)
+                        <?= $u['nome'] ?> (<?= $u['posicao'] ?>)
                     </option>
                 <?php endforeach; ?>
             </select>

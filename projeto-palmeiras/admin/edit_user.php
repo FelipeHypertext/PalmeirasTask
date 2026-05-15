@@ -115,7 +115,7 @@ $titulo_pagina = 'Editar Jogador';
             <select id="posicao" name="posicao">
                 <option value="">— Selecione —</option>
                 <?php foreach ($posicoes as $pos): ?>
-                    <option value="<?= $pos ?>" <?= (($POST['posicao'] ?? $usuario_atual['posicao']) === $pos) ? 'selected' : '' ?>>
+                    <option value="<?= $pos ?>" <?= (($_POST['posicao'] ?? $usuario_atual['posicao']) === $pos) ? 'selected' : '' ?>>
                         <?= $pos ?>
                     </option>
                 <?php endforeach; ?>
