@@ -1,0 +1,2194 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Defesa do Projeto — Palmeiras FC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde:   #006437;
+    --verde-l: #e8f5ee;
+    --azul:    #1a56db;
+    --azul-l:  #eff6ff;
+    --amarelo: #92400e;
+    --amarelo-l: #fffbeb;
+    --vermelho:#991b1b;
+    --vermelho-l:#fef2f2;
+    --cinza:   #374151;
+    --borda:   #e5e7eb;
+    --fundo:   #f9fafb;
+    --branco:  #ffffff;
+    --codigo-fundo: #1e1e2e;
+    --codigo-texto: #cdd6f4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--fundo);
+    color: var(--cinza);
+    line-height: 1.65;
+    font-size: 15px;
+  }
+  /* ── Layout ── */
+  .page { max-width: 900px; margin: 0 auto; padding: 32px 20px 80px; }
+
+  /* ── Cabeçalho ── */
+  .titulo-principal {
+    background: var(--verde);
+    color: #fff;
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 40px;
+  }
+  .titulo-principal h1 { font-size: 1.7rem; margin-bottom: 6px; }
+  .titulo-principal p  { opacity: .85; font-size: .95rem; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .chip {
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .3px;
+  }
+
+  /* ── Sumário ── */
+  .sumario {
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 40px;
+  }
+  .sumario h2 { font-size: 1rem; margin-bottom: 14px; color: #111; }
+  .sumario ol { padding-left: 20px; }
+  .sumario li { margin: 4px 0; }
+  .sumario a  { color: var(--azul); text-decoration: none; font-size: .9rem; }
+  .sumario a:hover { text-decoration: underline; }
+
+  /* ── Seções ── */
+  .secao { margin-bottom: 56px; }
+  .secao-titulo {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #111;
+    border-bottom: 3px solid var(--verde);
+    padding-bottom: 8px;
+    margin-bottom: 24px;
+  }
+
+  /* ── Cards de pergunta ── */
+  .pergunta {
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+  .pergunta-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    background: var(--verde);
+    color: #fff;
+    border-radius: 50%;
+    font-size: .78rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .pergunta-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 18px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .pergunta-header:hover { background: #f3f4f6; }
+  .pergunta-q {
+    font-weight: 600;
+    color: #111;
+    font-size: .95rem;
+    flex: 1;
+  }
+  .pergunta-seta {
+    font-size: .85rem;
+    color: #9ca3af;
+    transition: transform .2s;
+    margin-top: 2px;
+  }
+  .pergunta-body {
+    display: none;
+    padding: 0 20px 20px 60px;
+    border-top: 1px solid var(--borda);
+  }
+  .pergunta-body.aberta { display: block; }
+  .pergunta-body p  { margin-bottom: 10px; }
+  .pergunta-body ul { padding-left: 18px; margin-bottom: 10px; }
+  .pergunta-body li { margin: 4px 0; }
+  .pergunta-body strong { color: #111; }
+
+  /* ── Código ── */
+  pre {
+    background: var(--codigo-fundo);
+    color: var(--codigo-texto);
+    border-radius: 8px;
+    padding: 16px 18px;
+    overflow-x: auto;
+    margin: 12px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .82rem;
+    line-height: 1.6;
+  }
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .85em;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: #be185d;
+  }
+  pre code {
+    background: none;
+    border: none;
+    color: inherit;
+    padding: 0;
+    font-size: 1em;
+  }
+  /* Pseudo syntax highlight */
+  .kw  { color: #cba6f7; }   /* keyword */
+  .fn  { color: #89b4fa; }   /* function */
+  .str { color: #a6e3a1; }   /* string */
+  .cmt { color: #6c7086; font-style: italic; } /* comment */
+  .num { color: #fab387; }   /* number */
+  .var { color: #f38ba8; }   /* variable */
+
+  /* ── Alertas ── */
+  .alerta {
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: .88rem;
+    border-left: 4px solid;
+  }
+  .alerta-verde  { background: var(--verde-l);   border-color: var(--verde);   color: #064e3b; }
+  .alerta-azul   { background: var(--azul-l);    border-color: var(--azul);    color: #1e3a8a; }
+  .alerta-amarelo{ background: var(--amarelo-l); border-color: #d97706;        color: var(--amarelo); }
+  .alerta-vermelho{background: var(--vermelho-l);border-color: #dc2626;        color: var(--vermelho);}
+
+  /* ── Passos ── */
+  .passo {
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .passo-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    background: #f9fafb;
+    border-bottom: 1px solid var(--borda);
+  }
+  .passo-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--verde);
+    color: #fff;
+    font-weight: 700;
+    font-size: .85rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .passo-titulo { font-weight: 700; color: #111; font-size: .95rem; }
+  .passo-arquivo { font-size: .78rem; color: #6b7280; font-family: 'JetBrains Mono', monospace; }
+  .passo-corpo { padding: 16px 20px; }
+  .passo-corpo p  { margin-bottom: 10px; }
+  .passo-corpo ul { padding-left: 18px; margin-bottom: 10px; }
+  .passo-corpo li { margin: 5px 0; }
+
+  /* ── Fluxo visual ── */
+  .fluxo {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 14px 0;
+  }
+  .fluxo-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: .88rem;
+    padding: 7px 14px;
+    background: #f3f4f6;
+    border: 1px solid var(--borda);
+    border-radius: 6px;
+    margin-bottom: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .fluxo-item .seta { color: var(--verde); font-size: 1rem; }
+
+  /* ── Tabela ── */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: .88rem; }
+  th { background: #f3f4f6; padding: 8px 12px; text-align: left; border: 1px solid var(--borda); font-weight: 600; }
+  td { padding: 8px 12px; border: 1px solid var(--borda); }
+  tr:nth-child(even) td { background: #fafafa; }
+
+  /* ── Árvore de arquivos ── */
+  .tree { font-family: 'JetBrains Mono', monospace; font-size: .83rem; line-height: 1.7; }
+  .tree ul { list-style: none; padding: 0; margin: 0; }
+  .tree > ul { background: var(--codigo-fundo); color: var(--codigo-texto); border-radius: 8px; padding: 16px 20px; }
+  .tree ul ul { padding-left: 20px; border-left: 1px solid #45475a; margin-left: 8px; }
+  .tree li { padding: 1px 0; }
+  .tree .icon-pasta  { color: #89b4fa; }
+  .tree .icon-php    { color: #cba6f7; }
+  .tree .icon-css    { color: #a6e3a1; }
+  .tree .icon-sql    { color: #fab387; }
+  .tree .icon-html   { color: #f38ba8; }
+  .tree .desc { color: #6c7086; font-size: .78rem; margin-left: 8px; font-style: italic; }
+
+  /* ── Árvore de fluxo ── */
+  .tree-fluxo { font-family: 'JetBrains Mono', monospace; font-size: .82rem; }
+  .tree-fluxo ul { list-style: none; padding: 0; margin: 0; }
+  .tree-fluxo > ul { background: var(--codigo-fundo); color: var(--codigo-texto); border-radius: 8px; padding: 16px 20px; }
+  .tree-fluxo ul ul { padding-left: 22px; border-left: 1px dashed #45475a; margin-left: 10px; margin-top: 2px; }
+  .tree-fluxo li { padding: 2px 0; }
+  .tree-fluxo .node-req    { color: #fab387; font-weight: 700; }
+  .tree-fluxo .node-ctrl   { color: #89b4fa; }
+  .tree-fluxo .node-dao    { color: #a6e3a1; }
+  .tree-fluxo .node-model  { color: #cba6f7; }
+  .tree-fluxo .node-view   { color: #f38ba8; }
+  .tree-fluxo .node-db     { color: #fab387; }
+  .tree-fluxo .node-ses    { color: #94e2d5; }
+  .tree-fluxo .node-note   { color: #6c7086; font-style: italic; font-size: .78rem; }
+  .tree-fluxo .conector    { color: #45475a; }
+
+  /* ── Rodapé ── */
+  footer { text-align: center; font-size: .8rem; color: #9ca3af; padding: 32px 0 0; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- CABEÇALHO -->
+  <div class="titulo-principal">
+    <h1>Defesa do Projeto — Palmeiras FC</h1>
+    <p>Guia de estudo: perguntas prováveis + explicação completa do código</p>
+    <div class="chips">
+      <span class="chip">PHP 8</span>
+      <span class="chip">MVC</span>
+      <span class="chip">PDO</span>
+      <span class="chip">Sessions &amp; Cookies</span>
+      <span class="chip">CSRF</span>
+      <span class="chip">POO</span>
+      <span class="chip">MySQL</span>
+    </div>
+  </div>
+
+  <!-- SUMÁRIO -->
+  <div class="sumario">
+    <h2>Sumário</h2>
+    <ol>
+      <li><a href="#perguntas">40 perguntas prováveis na defesa</a> (Q1–Q20 PHP/POO · Q21–Q40 HTML + extras)</li>
+      <li><a href="#arvores">Árvore do projeto + fluxo visual</a></li>
+      <li><a href="#passo-a-passo">Passo a passo completo do código</a>
+      <li><a href="#quiz-prompt">Prompt para gerar o quiz na IA</a></li>
+        <ol style="padding-left:16px;margin-top:4px">
+          <li><a href="#p1">Entrada da aplicação — index.php</a></li>
+          <li><a href="#p2">Autoload — carregamento automático de classes</a></li>
+          <li><a href="#p3">Conexão com banco — Conn.php (Singleton)</a></li>
+          <li><a href="#p4">Models — Usuario, Tarefa, Noticia</a></li>
+          <li><a href="#p5">DAOs — acesso ao banco de dados</a></li>
+          <li><a href="#p6">Controllers — lógica de negócio</a></li>
+          <li><a href="#p7">Views — geração do HTML</a></li>
+          <li><a href="#p8">Fluxo completo: Login</a></li>
+          <li><a href="#p9">Fluxo completo: Cadastro de tarefa</a></li>
+          <li><a href="#p10">Proteção CSRF</a></li>
+          <li><a href="#p11">Cookie "lembrar-me"</a></li>
+          <li><a href="#p12">Recuperação de senha</a></li>
+        </ol>
+      </li>
+    </ol>
+  </div>
+
+  <!-- SEÇÃO 1 — PERGUNTAS -->
+  <section class="secao" id="perguntas">
+    <h2 class="secao-titulo">20 Perguntas Prováveis na Defesa</h2>
+    <p style="margin-bottom:20px;color:#6b7280;font-size:.88rem">Clique em cada pergunta para ver a resposta detalhada.</p>
+
+    <!-- Q1 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">1</span>
+        <span class="pergunta-q">O que faz o <code>isset()</code> e onde ele é usado no projeto?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><strong>isset()</strong> verifica se uma variável existe e se seu valor não é <code>null</code>. Retorna <code>true</code> se existir e não for nula, <code>false</code> caso contrário.</p>
+        <p>No projeto é usado em três situações principais:</p>
+        <ul>
+          <li>Verificar se o usuário está logado: <code>isset($_SESSION["id_usuario"])</code></li>
+          <li>Verificar se chegou dados de formulário: <code>isset($_POST["email"])</code></li>
+          <li>Verificar se existe cookie salvo: <code>isset($_COOKIE["palmeiras_token"])</code></li>
+        </ul>
+        <pre><code><span class="cmt">// Se o usuário está logado:</span>
+<span class="kw">if</span> (isset(<span class="var">$_SESSION</span>[<span class="str">"id_usuario"</span>])) {
+    <span class="cmt">// usuário autenticado</span>
+}
+
+<span class="cmt">// Se o formulário foi enviado:</span>
+<span class="kw">if</span> (<span class="var">$_SERVER</span>[<span class="str">"REQUEST_METHOD"</span>] === <span class="str">"POST"</span> &amp;&amp; isset(<span class="var">$_POST</span>[<span class="str">"email"</span>])) {
+    <span class="cmt">// processa login</span>
+}</code></pre>
+        <div class="alerta alerta-amarelo">Diferença de <code>isset()</code> para <code>empty()</code>: <code>isset("") = true</code> (existe mas é vazia), <code>empty("") = true</code> (é vazia). No projeto usamos <code>isset()</code> para checar existência.</div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">2</span>
+        <span class="pergunta-q">Para que serve o <code>session_start()</code>? Por que fica no topo do arquivo?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><strong>session_start()</strong> inicializa ou retoma a sessão PHP. Ele faz duas coisas:</p>
+        <ul>
+          <li>Lê o cookie <code>PHPSESSID</code> enviado pelo navegador</li>
+          <li>Carrega na variável <code>$_SESSION</code> os dados salvos no servidor para aquela sessão</li>
+        </ul>
+        <p>Precisa ficar <strong>antes de qualquer saída HTML</strong> porque ele envia um cabeçalho HTTP (<code>Set-Cookie: PHPSESSID=...</code>). Cabeçalhos só podem ser enviados antes do corpo da resposta. Se vier depois de um <code>echo</code> ou de qualquer espaço em branco, o PHP lança o erro <em>"headers already sent"</em>.</p>
+        <pre><code><span class="cmt">// index.php — PRIMEIRO bloco do arquivo</span>
+<span class="var">&lt;?php</span>
+<span class="kw">declare</span>(strict_types=<span class="num">1</span>);
+<span class="fn">session_start</span>();       <span class="cmt">// ← aqui, antes de tudo</span>
+<span class="fn">session_regenerate_id</span>(<span class="kw">true</span>);</code></pre>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">3</span>
+        <span class="pergunta-q">O que é <code>session_regenerate_id(true)</code> e por que usamos isso?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p>Cria um novo ID de sessão e descarta o antigo. O parâmetro <code>true</code> apaga o arquivo de sessão antigo no servidor.</p>
+        <p><strong>Por que é necessário?</strong> Para prevenir o ataque chamado <em>Session Fixation</em>: quando um atacante descobre o ID de sessão de um usuário antes do login e depois usa esse mesmo ID para se passar por ele depois que ele loga. Regenerando o ID no login, o ID antigo que o atacante conhecia para de funcionar.</p>
+        <pre><code><span class="cmt">// Usado no login bem-sucedido</span>
+<span class="fn">session_regenerate_id</span>(<span class="kw">true</span>);
+<span class="var">$_SESSION</span>[<span class="str">"id_usuario"</span>]   = <span class="var">$usuario</span>-><span class="fn">getId</span>();
+<span class="var">$_SESSION</span>[<span class="str">"nome_usuario"</span>] = <span class="var">$usuario</span>-><span class="fn">getNome</span>();
+<span class="var">$_SESSION</span>[<span class="str">"cargo"</span>]        = <span class="var">$usuario</span>-><span class="fn">getCargo</span>();</code></pre>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">4</span>
+        <span class="pergunta-q">O que é CSRF? Como está implementado aqui?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><strong>CSRF (Cross-Site Request Forgery)</strong> é um ataque onde um site malicioso força o navegador da vítima a fazer uma requisição ao seu sistema sem que ela saiba. Por exemplo: a vítima está logada no sistema e abre um link armadilha que envia um formulário POST para deletar dados.</p>
+        <p><strong>Defesa com token CSRF:</strong></p>
+        <ul>
+          <li>Na primeira requisição, gera-se um token aleatório e o salva na sessão</li>
+          <li>Todo formulário inclui esse token em um campo oculto</li>
+          <li>Ao receber o POST, o servidor compara o token do formulário com o da sessão</li>
+          <li>Se não bater, rejeita a requisição</li>
+        </ul>
+        <pre><code><span class="cmt">// 1. Gera o token (index.php)</span>
+<span class="kw">if</span> (!isset(<span class="var">$_SESSION</span>[<span class="str">"csrf_token"</span>])) {
+    <span class="var">$_SESSION</span>[<span class="str">"csrf_token"</span>] = <span class="fn">bin2hex</span>(<span class="fn">random_bytes</span>(<span class="num">32</span>));
+}
+
+<span class="cmt">// 2. Coloca no formulário (View)</span>
+&lt;input type="hidden" name="csrf" value="&lt;?= $_SESSION['csrf_token'] ?&gt;"&gt;
+
+<span class="cmt">// 3. Valida no Controller</span>
+<span class="var">$token</span> = <span class="var">$_POST</span>[<span class="str">"csrf"</span>] ?? <span class="str">""</span>;
+<span class="kw">if</span> (!<span class="fn">hash_equals</span>(<span class="var">$_SESSION</span>[<span class="str">"csrf_token"</span>], <span class="var">$token</span>)) {
+    <span class="kw">die</span>(<span class="str">"Falha no acesso"</span>);
+}</code></pre>
+        <p><strong>Por que <code>hash_equals()</code> e não <code>===</code>?</strong> O operador <code>===</code> para de comparar ao encontrar o primeiro caractere diferente (<em>timing attack</em>). <code>hash_equals()</code> sempre compara o tempo inteiro, impedindo que um atacante descubra o token letra por letra medindo o tempo de resposta.</p>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">5</span>
+        <span class="pergunta-q">O que faz <code>password_hash()</code> e <code>password_verify()</code>? Por que <code>PASSWORD_ARGON2ID</code>?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><strong>password_hash()</strong> transforma a senha em um hash criptográfico. Nunca salvamos a senha pura no banco — se o banco vazar, o atacante só tem o hash.</p>
+        <p><strong>password_verify()</strong> compara uma senha digitada com o hash salvo. Não é possível "descriptografar" o hash — ele recalcula e compara.</p>
+        <pre><code><span class="cmt">// Cadastro: guarda o hash no banco</span>
+<span class="var">$senhaHash</span> = <span class="fn">password_hash</span>(<span class="var">$senha</span>, PASSWORD_ARGON2ID);
+<span class="cmt">// Resultado: "$argon2id$v=19$m=65536,t=4,p=1$..."</span>
+
+<span class="cmt">// Login: compara senha digitada com hash do banco</span>
+<span class="kw">if</span> (<span class="fn">password_verify</span>(<span class="var">$senhaDigitada</span>, <span class="var">$usuario</span>-><span class="fn">getSenha</span>())) {
+    <span class="cmt">// senha correta</span>
+}</code></pre>
+        <p><strong>Por que ARGON2ID?</strong> É o algoritmo mais moderno e seguro disponível no PHP 8. É resistente a ataques por GPU e por hardware especializado (ASIC). O bcrypt (padrão antigo) é mais vulnerável a esses ataques.</p>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">6</span>
+        <span class="pergunta-q">O que é PDO? Qual a diferença para o <code>mysqli</code>?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><strong>PDO (PHP Data Objects)</strong> é uma camada de abstração de banco de dados. Fornece uma interface única independente do banco.</p>
+        <table>
+          <tr><th>PDO</th><th>mysqli</th></tr>
+          <tr><td>Suporta MySQL, PostgreSQL, SQLite, etc.</td><td>Só MySQL</td></tr>
+          <tr><td>Orientado a objetos por padrão</td><td>Mistura procedural e OO</td></tr>
+          <tr><td>Prepared statements mais limpos</td><td>Sintaxe mais verbosa</td></tr>
+          <tr><td>Lança exceções (PDOException)</td><td>Retorna false/errors</td></tr>
+        </table>
+        <pre><code><span class="cmt">// Conexão PDO — Conn.php</span>
+<span class="kw">new</span> <span class="fn">PDO</span>(
+    <span class="str">"mysql:host=localhost:3307;dbname=palmeirasdb"</span>,
+    <span class="str">"root"</span>,
+    <span class="str">""</span>
+);</code></pre>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">7</span>
+        <span class="pergunta-q">O que faz o <code>prepare()</code>? Por que ele previne SQL Injection?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><strong>SQL Injection</strong> é quando um usuário malicioso coloca comandos SQL dentro de um campo do formulário para manipular o banco. Exemplo: digitar <code>' OR '1'='1</code> no campo de senha para logar sem senha.</p>
+        <p><strong>prepare()</strong> envia a estrutura da query para o banco <em>antes</em> dos dados. O banco já sabe o que é SQL e o que são dados — nunca confunde os dois.</p>
+        <pre><code><span class="cmt">// ERRADO — vulnerável a SQL Injection</span>
+<span class="var">$sql</span> = <span class="str">"SELECT * FROM usuarios WHERE email = '</span><span class="var">$email</span><span class="str">'"</span>;
+
+<span class="cmt">// CERTO — usando prepare() + bindValue()</span>
+<span class="var">$sql</span> = <span class="var">$pdo</span>-><span class="fn">prepare</span>(<span class="str">"SELECT * FROM usuarios WHERE email = ?"</span>);
+<span class="var">$sql</span>-><span class="fn">execute</span>([<span class="var">$email</span>]);
+<span class="cmt">// O banco trata $email como DADO puro, nunca como SQL</span></code></pre>
+        <p>Os <code>?</code> ou <code>:nome</code> são chamados de <em>placeholders</em> — espaços reservados onde os dados serão inseridos com segurança.</p>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">8</span>
+        <span class="pergunta-q">O que é <code>bindValue()</code>? Qual a diferença para <code>bindParam()</code>?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><strong>bindValue()</strong> vincula um <em>valor</em> ao placeholder. Copia o valor naquele momento. <strong>bindParam()</strong> vincula uma <em>referência</em> à variável — se a variável mudar antes do <code>execute()</code>, o novo valor é usado.</p>
+        <pre><code><span class="cmt">// bindValue — copia o valor agora</span>
+<span class="var">$sql</span>-><span class="fn">bindValue</span>(<span class="str">":nome"</span>,  <span class="var">$usuario</span>-><span class="fn">getNome</span>(),  PDO::PARAM_STR);
+<span class="var">$sql</span>-><span class="fn">bindValue</span>(<span class="str">":email"</span>, <span class="var">$usuario</span>-><span class="fn">getEmail</span>(), PDO::PARAM_STR);
+<span class="var">$sql</span>-><span class="fn">execute</span>();
+
+<span class="cmt">// PDO::PARAM_STR = string, PDO::PARAM_INT = inteiro</span>
+<span class="cmt">// Isso garante que o tipo do dado está correto</span></code></pre>
+        <p>No projeto usamos sempre <code>bindValue()</code> porque chamamos getters diretamente (retornam valores, não referências).</p>
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">9</span>
+        <span class="pergunta-q">O que é <code>fetchAll(PDO::FETCH_ASSOC)</code> e <code>fetch(PDO::FETCH_ASSOC)</code>?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p>Após executar um SELECT, precisamos ler os resultados:</p>
+        <ul>
+          <li><strong>fetchAll()</strong> — retorna <em>todas</em> as linhas de uma vez em um array</li>
+          <li><strong>fetch()</strong> — retorna apenas a <em>próxima</em> linha (ou <code>false</code> se não houver mais)</li>
+          <li><strong>PDO::FETCH_ASSOC</strong> — cada linha vira um array associativo com chaves igual ao nome das colunas</li>
+        </ul>
+        <pre><code><span class="cmt">// fetchAll — para listar vários registros</span>
+<span class="var">$res</span> = <span class="var">$sql</span>-><span class="fn">fetchAll</span>(PDO::FETCH_ASSOC);
+<span class="cmt">// $res = [ ["id"=>1,"titulo"=>"..."], ["id"=>2,...] ]</span>
+
+<span class="cmt">// fetch — para buscar um único registro</span>
+<span class="var">$d</span> = <span class="var">$sql</span>-><span class="fn">fetch</span>(PDO::FETCH_ASSOC);
+<span class="cmt">// $d = ["id"=>1, "email"=>"admin@palmeiras.com", ...]</span>
+<span class="kw">if</span> (!<span class="var">$d</span>) <span class="kw">return null</span>; <span class="cmt">// nenhum resultado</span></code></pre>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">10</span>
+        <span class="pergunta-q">O que é <code>spl_autoload_register</code> e como o autoload funciona aqui?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p>Sem autoload, teríamos que escrever um <code>require_once</code> para cada classe usada. <strong>spl_autoload_register</strong> registra uma função que é chamada automaticamente sempre que o PHP tenta usar uma classe ainda não carregada.</p>
+        <pre><code><span class="cmt">// Autoload.php</span>
+<span class="fn">spl_autoload_register</span>(<span class="kw">function</span> (<span class="var">$namespace</span>) {
+    <span class="var">$arquivo</span> = __DIR__ . DIRECTORY_SEPARATOR
+        . <span class="fn">str_replace</span>([<span class="str">'App\\'</span>, <span class="str">'\\'</span>], [<span class="str">''</span>, DIRECTORY_SEPARATOR], <span class="var">$namespace</span>)
+        . <span class="str">".php"</span>;
+    <span class="kw">if</span> (<span class="fn">file_exists</span>(<span class="var">$arquivo</span>)) { <span class="kw">require_once</span> <span class="var">$arquivo</span>; }
+});</code></pre>
+        <p>Exemplo de conversão:</p>
+        <ul>
+          <li><code>App\Model\Usuario</code> → remove "App\" → <code>Model\Usuario</code> → troca "\" por "/" → <code>model/Usuario.php</code></li>
+          <li><code>App\Dal\UsuarioDao</code> → <code>dal/UsuarioDao.php</code></li>
+          <li><code>App\Controller\AuthController</code> → <code>controller/AuthController.php</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">11</span>
+        <span class="pergunta-q">O que é namespace e como está organizado no projeto?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p>Namespace evita conflito de nomes entre classes. É como um "sobrenome" para as classes — você pode ter <code>App\Model\Usuario</code> e <code>App\Controller\Usuario</code> sem conflito.</p>
+        <table>
+          <tr><th>Namespace</th><th>Pasta</th><th>Responsabilidade</th></tr>
+          <tr><td><code>App\Model\</code></td><td><code>model/</code></td><td>Representação dos dados (entidades)</td></tr>
+          <tr><td><code>App\Dal\</code></td><td><code>dal/</code></td><td>Acesso ao banco (CRUD)</td></tr>
+          <tr><td><code>App\Controller\</code></td><td><code>controller/</code></td><td>Lógica de negócio</td></tr>
+          <tr><td><code>App\View\</code></td><td><code>view/</code></td><td>Geração do HTML</td></tr>
+          <tr><td><code>App\Util\</code></td><td><code>util/</code></td><td>Funções utilitárias</td></tr>
+        </table>
+        <pre><code><span class="kw">namespace</span> App\Model;          <span class="cmt">// declara em qual namespace está</span>
+
+<span class="kw">use</span> App\Dal\UsuarioDao;       <span class="cmt">// importa outra classe de outro namespace</span>
+<span class="kw">use</span> App\Util\Functions <span class="kw">as</span> Util; <span class="cmt">// importa com alias</span></code></pre>
+      </div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">12</span>
+        <span class="pergunta-q">O que é MVC? Como cada camada está dividida neste projeto?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><strong>MVC (Model-View-Controller)</strong> é um padrão de projeto que separa responsabilidades em três camadas:</p>
+        <table>
+          <tr><th>Camada</th><th>No projeto</th><th>Faz o quê</th></tr>
+          <tr><td><strong>Model</strong></td><td><code>model/</code> + <code>dal/</code></td><td>Representa os dados e acessa o banco</td></tr>
+          <tr><td><strong>View</strong></td><td><code>view/</code></td><td>Gera o HTML que o usuário vê</td></tr>
+          <tr><td><strong>Controller</strong></td><td><code>controller/</code></td><td>Recebe a requisição, processa, chama Model e View</td></tr>
+        </table>
+        <p>O fluxo é sempre: <strong>index.php → Controller → DAO (Model) → View</strong></p>
+        <div class="fluxo">
+          <div class="fluxo-item"><span class="seta">→</span> Usuário acessa <code>?p=tarefas</code></div>
+          <div class="fluxo-item"><span class="seta">→</span> <code>index.php</code> faz o roteamento</div>
+          <div class="fluxo-item"><span class="seta">→</span> <code>TarefaController::listar()</code> é chamado</div>
+          <div class="fluxo-item"><span class="seta">→</span> Controller chama <code>TarefaDao::listar()</code></div>
+          <div class="fluxo-item"><span class="seta">→</span> DAO consulta o banco e retorna objetos <code>Tarefa[]</code></div>
+          <div class="fluxo-item"><span class="seta">→</span> Controller passa para <code>TarefaView::listar()</code></div>
+          <div class="fluxo-item"><span class="seta">→</span> View gera o HTML e o usuário vê a tabela</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q13 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">13</span>
+        <span class="pergunta-q">O que é uma classe <code>abstract</code>? Por que os DAOs são abstratos?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p>Uma <strong>classe abstrata</strong> não pode ser instanciada diretamente — não dá para fazer <code>new UsuarioDao()</code>. Serve de modelo ou container de métodos estáticos relacionados.</p>
+        <p>No projeto, os DAOs são <code>abstract</code> porque:</p>
+        <ul>
+          <li>Todos os métodos são <code>static</code> — não precisamos de objetos</li>
+          <li>Impede que alguém crie uma instância desnecessária</li>
+          <li>Deixa claro que é uma classe utilitária, não uma entidade</li>
+        </ul>
+        <pre><code><span class="kw">abstract class</span> <span class="fn">UsuarioDao</span> {
+    <span class="kw">public static function</span> <span class="fn">cadastrar</span>(Usuario <span class="var">$usuario</span>): <span class="kw">int</span> { ... }
+    <span class="kw">public static function</span> <span class="fn">listar</span>(): <span class="kw">array</span> { ... }
+}
+
+<span class="cmt">// Uso: diretamente na classe, sem instanciar</span>
+<span class="var">$lista</span> = <span class="fn">UsuarioDao</span>::<span class="fn">listar</span>();</code></pre>
+      </div>
+    </div>
+
+    <!-- Q14 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">14</span>
+        <span class="pergunta-q">Por que o construtor dos Models é <code>private</code>? O que é o padrão Factory Method?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p>O construtor <code>private function __construct() {}</code> impede que alguém crie um objeto assim:</p>
+        <pre><code><span class="var">$u</span> = <span class="kw">new</span> <span class="fn">Usuario</span>(); <span class="cmt">// ERRO — construtor é private</span></code></pre>
+        <p>A criação é obrigada a passar pelo método <strong>criar()</strong>, que é o Factory Method. Vantagem: o método <code>criar()</code> chama os <em>setters com validação</em> antes de preencher as propriedades.</p>
+        <pre><code><span class="kw">public static function</span> <span class="fn">criar</span>(?<span class="kw">int</span> <span class="var">$id</span>, <span class="kw">string</span> <span class="var">$nome</span>, ...): <span class="kw">static</span> {
+    <span class="var">$usuario</span> = <span class="kw">new static</span>();   <span class="cmt">// só a própria classe pode chamar new</span>
+    <span class="var">$usuario</span>-><span class="fn">setNome</span>(<span class="var">$nome</span>);  <span class="cmt">// setter valida: nome não pode ser vazio</span>
+    <span class="var">$usuario</span>-><span class="fn">setCpf</span>(<span class="var">$cpf</span>);    <span class="cmt">// setter valida: CPF deve ter 11 dígitos</span>
+    <span class="kw">return</span> <span class="var">$usuario</span>;
+}</code></pre>
+        <p>Assim, um <code>Usuario</code> sempre nasce válido — nunca existe um objeto com nome vazio ou CPF errado.</p>
+      </div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">15</span>
+        <span class="pergunta-q">O que são cookies? Como o "lembrar-me" foi implementado?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p>Cookies são pequenos arquivos de texto que o servidor manda para o navegador e o navegador devolve em toda requisição futura. Ao contrário da sessão (que some quando o navegador fecha), cookies persistem pelo tempo configurado.</p>
+        <p><strong>Implementação do lembrar-me:</strong></p>
+        <ul>
+          <li>Usuário marca "lembrar-me" no login</li>
+          <li>Geramos um token aleatório, salvamos o hash no banco e o token puro no cookie</li>
+          <li>Nas próximas visitas, se encontrar o cookie, busca o hash no banco e loga automaticamente</li>
+        </ul>
+        <pre><code><span class="cmt">// Gera token e salva hash no banco</span>
+<span class="var">$tokenRaw</span>  = <span class="fn">bin2hex</span>(<span class="fn">random_bytes</span>(<span class="num">32</span>)); <span class="cmt">// token que vai no cookie</span>
+<span class="var">$hashToken</span> = <span class="fn">hash</span>(<span class="str">"sha256"</span>, <span class="var">$tokenRaw</span>);    <span class="cmt">// hash que fica no banco</span>
+<span class="fn">UsuarioDao</span>::<span class="fn">atualizarToken</span>(<span class="var">$id</span>, <span class="var">$hashToken</span>);
+
+<span class="cmt">// Envia cookie por 30 dias</span>
+<span class="var">$expira</span> = <span class="fn">time</span>() + (<span class="num">30</span> * <span class="num">24</span> * <span class="num">60</span> * <span class="num">60</span>);
+<span class="fn">setcookie</span>(<span class="str">"palmeiras_token"</span>, <span class="var">$tokenRaw</span>, <span class="var">$expira</span>, <span class="str">"/"</span>, <span class="str">""</span>, <span class="kw">false</span>, <span class="kw">true</span>);
+
+<span class="cmt">// Na próxima visita: verifica o cookie</span>
+<span class="kw">if</span> (isset(<span class="var">$_COOKIE</span>[<span class="str">"palmeiras_token"</span>])) {
+    <span class="var">$hash</span>    = <span class="fn">hash</span>(<span class="str">"sha256"</span>, <span class="var">$_COOKIE</span>[<span class="str">"palmeiras_token"</span>]);
+    <span class="var">$usuario</span> = <span class="fn">UsuarioDao</span>::<span class="fn">buscarPorToken</span>(<span class="var">$hash</span>);
+    <span class="kw">if</span> (<span class="var">$usuario</span> !== <span class="kw">null</span>) { <span class="cmt">// loga automaticamente</span> }
+}</code></pre>
+        <p>Salvamos o <em>hash</em> no banco (não o token puro) para que se o banco vazar, o atacante ainda não consiga usar o valor diretamente.</p>
+      </div>
+    </div>
+
+    <!-- Q16 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">16</span>
+        <span class="pergunta-q">O que é o <code>match()</code> no PHP 8? Qual a diferença para o <code>switch()</code>?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <table>
+          <tr><th>match()</th><th>switch()</th></tr>
+          <tr><td>Comparação estrita (<code>===</code>)</td><td>Comparação frouxa (<code>==</code>)</td></tr>
+          <tr><td>Retorna um valor</td><td>Executa blocos de código</td></tr>
+          <tr><td>Sem fall-through acidental</td><td>Precisa de <code>break</code></td></tr>
+          <tr><td>Lança erro se nenhum arm bater</td><td>Silencioso se nenhum <code>case</code> bater</td></tr>
+        </table>
+        <pre><code><span class="cmt">// match no roteamento (index.php)</span>
+<span class="fn">match</span>(<span class="var">$page</span>) {
+    <span class="str">"home"</span>     => <span class="kw">require_once</span>(<span class="str">"./view/home.php"</span>),
+    <span class="str">"login"</span>    => <span class="fn">AuthController</span>::<span class="fn">login</span>(),
+    <span class="str">"tarefas"</span>  => <span class="fn">TarefaController</span>::<span class="fn">listar</span>(),
+    <span class="kw">default</span>    => <span class="kw">require_once</span>(<span class="str">"./view/404.php"</span>),
+};
+
+<span class="cmt">// match para títulos da página</span>
+<span class="var">$titulo</span> = <span class="fn">match</span>(<span class="var">$page</span>) {
+    <span class="str">"home"</span>    => <span class="str">"Home"</span>,
+    <span class="str">"tarefas"</span> => <span class="str">"Tarefas"</span>,
+    <span class="kw">default</span>   => <span class="str">"ERRO 404"</span>
+};</code></pre>
+      </div>
+    </div>
+
+    <!-- Q17 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">17</span>
+        <span class="pergunta-q">O que é <code>header("Location: ...")</code> e por que vem seguido de <code>exit</code>?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><strong>header("Location: url")</strong> envia um cabeçalho HTTP de redirecionamento (código 302). O navegador recebe e carrega a nova URL.</p>
+        <p>O <code>exit</code> (ou <code>exit;</code>) é <strong>obrigatório</strong> logo após. Sem ele, o PHP continuaria executando o código abaixo do header — inclusive poderia mostrar dados protegidos para usuários não autorizados antes do navegador concluir o redirecionamento.</p>
+        <pre><code><span class="cmt">// Redireciona após login bem-sucedido</span>
+<span class="fn">header</span>(<span class="str">"Location: ./"</span>);
+<span class="kw">exit</span>; <span class="cmt">// SEMPRE após header Location</span>
+
+<span class="cmt">// Protege página privada</span>
+<span class="kw">if</span> (!<span class="var">$autenticado</span> &amp;&amp; !<span class="fn">in_array</span>(<span class="var">$page</span>, <span class="var">$paginasPublicas</span>)) {
+    <span class="fn">header</span>(<span class="str">"Location: ./?p=login"</span>);
+    <span class="kw">exit</span>;
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- Q18 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">18</span>
+        <span class="pergunta-q">O que faz <code>htmlentities()</code> e <code>trim()</code>? Por que são importantes?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><strong>trim()</strong> remove espaços em branco do início e do fim de uma string.</p>
+        <p><strong>htmlentities()</strong> converte caracteres especiais HTML em entidades seguras. Isso previne XSS (Cross-Site Scripting) — quando um atacante injeta código HTML/JavaScript nos campos do formulário.</p>
+        <pre><code><span class="cmt">// Sem proteção — XSS possível</span>
+<span class="cmt">// Usuário digita: &lt;script&gt;alert('hackeado')&lt;/script&gt;</span>
+<span class="cmt">// Se exibir direto, executa o JavaScript!</span>
+
+<span class="cmt">// Com htmlentities — converte para texto inofensivo</span>
+<span class="fn">htmlentities</span>(<span class="str">"&lt;script&gt;alert('xss')&lt;/script&gt;"</span>);
+<span class="cmt">// resultado: "&amp;lt;script&amp;gt;alert('xss')&amp;lt;/script&amp;gt;"</span>
+<span class="cmt">// exibe o texto na tela, mas não executa</span></code></pre>
+        <pre><code><span class="cmt">// Functions.php — usada em todo input do usuário</span>
+<span class="kw">public static function</span> <span class="fn">preparaTexto</span>(<span class="kw">string</span> <span class="var">$texto</span>): <span class="kw">string</span> {
+    <span class="kw">return</span> <span class="fn">trim</span>(<span class="fn">htmlentities</span>(<span class="var">$texto</span>));
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- Q19 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">19</span>
+        <span class="pergunta-q">O que é <code>usort()</code> com arrow function? Como a ordenação funciona?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><strong>usort()</strong> ordena um array usando uma função de comparação personalizada. A função recebe dois elementos e deve retornar:</p>
+        <ul>
+          <li>Negativo: se o primeiro vem antes</li>
+          <li>Zero: se são iguais</li>
+          <li>Positivo: se o segundo vem antes</li>
+        </ul>
+        <p>O operador <code>&lt;=&gt;</code> (spaceship) já retorna -1, 0 ou 1 automaticamente.</p>
+        <pre><code><span class="cmt">// TarefaController — ordenação dinâmica</span>
+<span class="var">$ordem</span> = <span class="fn">match</span>(<span class="var">$_GET</span>[<span class="str">"order"</span>] ?? <span class="str">""</span>) {
+    <span class="str">"titulo"</span> => <span class="str">"getTitulo"</span>,
+    <span class="str">"status"</span> => <span class="str">"getStatus"</span>,
+    <span class="str">"prazo"</span>  => <span class="str">"getPrazo"</span>,
+    <span class="kw">default</span>  => <span class="str">"getId"</span>
+};
+
+<span class="fn">usort</span>(<span class="var">$tarefas</span>, <span class="fn">fn</span>(<span class="var">$a</span>, <span class="var">$b</span>) => <span class="var">$a</span>->{<span class="var">$ordem</span>}() &lt;=&gt; <span class="var">$b</span>->{<span class="var">$ordem</span>}());
+<span class="cmt">// $a->getId() <=> $b->getId() quando order não for especificado</span></code></pre>
+        <p>A <strong>arrow function</strong> (<code>fn() =></code>) é uma sintaxe compacta do PHP 7.4+ para funções de uma linha que capturam variáveis do escopo externo automaticamente (sem precisar de <code>use</code>).</p>
+      </div>
+    </div>
+
+    <!-- Q20 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">20</span>
+        <span class="pergunta-q">O que é <code>in_array()</code>? Como é usado para controle de acesso?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><strong>in_array(valor, array)</strong> verifica se um valor existe dentro de um array. Retorna <code>true</code> ou <code>false</code>.</p>
+        <pre><code><span class="cmt">// Controle de acesso — index.php</span>
+<span class="var">$paginasPublicas</span> = [<span class="str">"home"</span>, <span class="str">"noticias"</span>, <span class="str">"sobre"</span>, <span class="str">"login"</span>, <span class="str">"registro"</span>, <span class="str">"recuperar"</span>];
+
+<span class="kw">if</span> (!<span class="var">$autenticado</span> &amp;&amp; !<span class="fn">in_array</span>(<span class="var">$page</span>, <span class="var">$paginasPublicas</span>)) {
+    <span class="fn">header</span>(<span class="str">"Location: ./?p=login"</span>);
+    <span class="kw">exit</span>;
+}
+
+<span class="cmt">// Validação de valores aceitos — Model Tarefa</span>
+<span class="kw">if</span> (!<span class="fn">in_array</span>(<span class="var">$status</span>, [<span class="str">"pendente"</span>, <span class="str">"em_andamento"</span>, <span class="str">"concluida"</span>])) {
+    <span class="kw">throw new</span> \<span class="fn">InvalidArgumentException</span>(<span class="str">"Status inválido."</span>);
+}
+
+<span class="cmt">// Validação de cargo — Model Usuario</span>
+<span class="kw">if</span> (!<span class="fn">in_array</span>(<span class="var">$cargo</span>, [<span class="str">"admin"</span>, <span class="str">"membro"</span>])) {
+    <span class="kw">throw new</span> \<span class="fn">InvalidArgumentException</span>(<span class="str">"Cargo inválido."</span>);
+}</code></pre>
+        <p>É uma whitelist (lista branca): em vez de tentar bloquear valores inválidos, definimos exatamente quais são válidos.</p>
+      </div>
+    </div>
+
+    <!-- DIVISOR HTML -->
+    <div style="background:var(--verde);color:#fff;border-radius:8px;padding:12px 20px;margin:28px 0 20px;font-weight:700;font-size:.9rem;letter-spacing:.4px">
+      HTML5 · CSS · Tags Semânticas
+    </div>
+
+    <!-- Q21 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">21</span>
+        <span class="pergunta-q">O que é HTML5 semântico? Quais tags semânticas foram usadas no projeto?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p>HTML semântico é usar tags que descrevem o <em>significado</em> do conteúdo, não apenas sua aparência. Em vez de usar só <code>&lt;div&gt;</code> para tudo, cada elemento diz o que representa.</p>
+        <p>Tags semânticas usadas no projeto:</p>
+        <table>
+          <tr><th>Tag</th><th>Onde está</th><th>Significado</th></tr>
+          <tr><td><code>&lt;header&gt;</code></td><td>index.php</td><td>Cabeçalho da página — contém o <code>&lt;nav&gt;</code></td></tr>
+          <tr><td><code>&lt;nav&gt;</code></td><td>menu.php, index.php</td><td>Bloco de navegação (links do menu)</td></tr>
+          <tr><td><code>&lt;main&gt;</code></td><td>index.php</td><td>Conteúdo principal único da página</td></tr>
+          <tr><td><code>&lt;footer&gt;</code></td><td>index.php</td><td>Rodapé com copyright</td></tr>
+          <tr><td><code>&lt;section&gt;</code></td><td>Views</td><td>Seção temática com título próprio</td></tr>
+          <tr><td><code>&lt;article&gt;</code></td><td>home.php, sobre.php</td><td>Conteúdo independente (card de notícia)</td></tr>
+          <tr><td><code>&lt;table&gt;</code></td><td>TarefaView, UsuarioView</td><td>Dados tabulares (lista de tarefas)</td></tr>
+          <tr><td><code>&lt;caption&gt;</code></td><td>TarefaView</td><td>Legenda acessível da tabela</td></tr>
+          <tr><td><code>&lt;thead&gt; &lt;tbody&gt;</code></td><td>TarefaView</td><td>Cabeçalho e corpo da tabela</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Q22 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">22</span>
+        <span class="pergunta-q">Qual a diferença entre <code>&lt;div&gt;</code>, <code>&lt;section&gt;</code> e <code>&lt;article&gt;</code>?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <table>
+          <tr><th>Tag</th><th>Semântica</th><th>Quando usar</th></tr>
+          <tr><td><code>&lt;div&gt;</code></td><td>Nenhuma — container genérico</td><td>Agrupamento visual/CSS sem significado especial</td></tr>
+          <tr><td><code>&lt;section&gt;</code></td><td>Seção do documento</td><td>Bloco temático que teria um título (<code>&lt;h2&gt;</code>, <code>&lt;h3&gt;</code>)</td></tr>
+          <tr><td><code>&lt;article&gt;</code></td><td>Conteúdo independente</td><td>Algo que faz sentido sozinho: card, post, notícia</td></tr>
+          <tr><td><code>&lt;nav&gt;</code></td><td>Navegação</td><td>Conjunto de links de navegação do site</td></tr>
+          <tr><td><code>&lt;aside&gt;</code></td><td>Conteúdo lateral</td><td>Informação complementar ao conteúdo principal</td></tr>
+        </table>
+        <pre><code><span class="cmt">&lt;!-- Estrutura usada no projeto --&gt;</span>
+&lt;header&gt;
+  &lt;nav&gt; links do menu &lt;/nav&gt;
+&lt;/header&gt;
+&lt;main&gt;
+  &lt;section&gt;          &lt;!-- seção de tarefas --&gt;
+    &lt;table&gt; ... &lt;/table&gt;
+  &lt;/section&gt;
+&lt;/main&gt;
+&lt;footer&gt; copyright &lt;/footer&gt;</code></pre>
+      </div>
+    </div>
+
+    <!-- Q23 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">23</span>
+        <span class="pergunta-q">O que faz <code>&lt;meta charset="UTF-8"&gt;</code> e <code>&lt;meta name="viewport"&gt;</code>?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><strong>&lt;meta charset="UTF-8"&gt;</strong> — Define o conjunto de caracteres da página. UTF-8 suporta todos os caracteres do português (ã, ç, é, ó) e de qualquer idioma. Sem isso, acentos aparecem como caracteres estranhos (<code>Ã§Ã£o</code>).</p>
+        <p><strong>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</strong> — Instrui o navegador mobile a usar a largura real do dispositivo em vez de simular uma tela de desktop. Essencial para que o CSS responsivo funcione em celulares.</p>
+        <pre><code>&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Palmeiras FC — &lt;?= $titulo ?&gt;&lt;/title&gt;
+  &lt;link rel="stylesheet" href="./assets/style.css"&gt;
+&lt;/head&gt;</code></pre>
+      </div>
+    </div>
+
+    <!-- Q24 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">24</span>
+        <span class="pergunta-q">O que é <code>method="post"</code> no formulário? Qual a diferença para <code>method="get"</code>?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <table>
+          <tr><th></th><th>GET</th><th>POST</th></tr>
+          <tr><td>Dados ficam</td><td>Na URL: <code>?email=x&senha=y</code></td><td>No corpo da requisição (invisível na URL)</td></tr>
+          <tr><td>Segurança</td><td>Dados aparecem no histórico e logs</td><td>Mais seguro para dados sensíveis</td></tr>
+          <tr><td>Limite</td><td>~2000 caracteres na URL</td><td>Sem limite prático</td></tr>
+          <tr><td>Uso</td><td>Busca, filtros, navegação</td><td>Login, cadastro, qualquer envio de dados</td></tr>
+          <tr><td>Recarregar</td><td>Reenvia sem aviso</td><td>Navegador pergunta antes de reenviar</td></tr>
+        </table>
+        <pre><code><span class="cmt">&lt;!-- Formulário de login — usa POST (senha não aparece na URL) --&gt;</span>
+&lt;form action="./?p=login" method="post"&gt;
+  &lt;input type="hidden" name="csrf" value="..."&gt;
+  &lt;input type="text"     name="email"&gt;
+  &lt;input type="password" name="senha"&gt;
+  &lt;button type="submit"&gt;Entrar&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+        <p>No PHP lemos com <code>$_POST["email"]</code> (POST) ou <code>$_GET["p"]</code> (GET — parâmetro de roteamento).</p>
+      </div>
+    </div>
+
+    <!-- Q25 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">25</span>
+        <span class="pergunta-q">O que é <code>&lt;input type="hidden"&gt;</code> e onde é usado no projeto?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p>Um campo invisível para o usuário mas enviado junto com o formulário no POST. O usuário não vê, mas o servidor recebe.</p>
+        <p>Usado em três situações no projeto:</p>
+        <ul>
+          <li><strong>Token CSRF:</strong> <code>&lt;input type="hidden" name="csrf" value="..."&gt;</code> — protege contra ataques cross-site</li>
+          <li><strong>ID do registro:</strong> <code>&lt;input type="hidden" name="id" value="..."&gt;</code> — ao editar, informa qual registro atualizar</li>
+          <li><strong>criado_por:</strong> <code>&lt;input type="hidden" name="criado_por" value="..."&gt;</code> — mantém o autor original ao editar tarefa</li>
+        </ul>
+        <pre><code><span class="cmt">&lt;!-- Formulário de edição de tarefa --&gt;</span>
+&lt;form action="./?p=alt-tarefa" method="post"&gt;
+  &lt;input type="hidden" name="csrf"       value="&lt;?= $_SESSION['csrf_token'] ?&gt;"&gt;
+  &lt;input type="hidden" name="id"         value="&lt;?= $tarefa-&gt;getId() ?&gt;"&gt;
+  &lt;input type="hidden" name="criado_por" value="&lt;?= $tarefa-&gt;getCriadoPor() ?&gt;"&gt;
+  ...
+&lt;/form&gt;</code></pre>
+      </div>
+    </div>
+
+    <!-- Q26 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">26</span>
+        <span class="pergunta-q">O que faz o atributo <code>action</code> no <code>&lt;form&gt;</code>? O que acontece se omitir?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><strong>action</strong> define para qual URL os dados do formulário serão enviados. Se omitido, o formulário envia para a URL atual (mesma página).</p>
+        <pre><code><span class="cmt">&lt;!-- Envia para ?p=login (mesma page do formulário) --&gt;</span>
+&lt;form action="./?p=login" method="post"&gt;
+
+<span class="cmt">&lt;!-- Envia para ?p=alt-tarefa --&gt;</span>
+&lt;form action="./?p=alt-tarefa" method="post"&gt;
+
+<span class="cmt">&lt;!-- Sem action = envia pra URL atual --&gt;</span>
+&lt;form method="post"&gt;</code></pre>
+        <p>No projeto usamos <code>action="./?p=..."</code> explícito para ficar claro qual controller vai processar. O controller identifica se é POST ou GET pelo <code>$_SERVER["REQUEST_METHOD"]</code>.</p>
+      </div>
+    </div>
+
+    <!-- Q27 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">27</span>
+        <span class="pergunta-q">O que é <code>&lt;label for=""&gt;</code> e por que é importante?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><code>&lt;label for="id"&gt;</code> associa um texto descritivo a um campo de formulário. O <code>for</code> deve ter o mesmo valor do <code>id</code> do input correspondente.</p>
+        <p><strong>Por que é importante:</strong></p>
+        <ul>
+          <li><strong>Acessibilidade:</strong> leitores de tela anunciam o label quando o campo recebe foco</li>
+          <li><strong>Usabilidade:</strong> clicar no label foca/ativa o campo automaticamente</li>
+          <li><strong>Semântica:</strong> deixa explícita a relação entre texto e campo</li>
+        </ul>
+        <pre><code><span class="cmt">&lt;!-- Correto: label vinculado ao input pelo id --&gt;</span>
+&lt;label for="email"&gt;E-mail&lt;/label&gt;
+&lt;input type="text" name="email" id="email"&gt;
+
+<span class="cmt">&lt;!-- Ao clicar em "E-mail", o cursor vai pro campo --&gt;</span></code></pre>
+      </div>
+    </div>
+
+    <!-- Q28 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">28</span>
+        <span class="pergunta-q">Como funciona o <code>&lt;select&gt;</code> com <code>&lt;option&gt;</code>? Como o <code>selected</code> é definido dinamicamente?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><code>&lt;select&gt;</code> cria uma lista suspensa. Cada opção é um <code>&lt;option value="..."&gt;</code>. O atributo <code>selected</code> marca qual opção está pré-selecionada.</p>
+        <p>No projeto, o status atual da tarefa é pré-selecionado com PHP ternário:</p>
+        <pre><code>&lt;select name="status" id="status"&gt;
+  &lt;option value="pendente"
+    &lt;?= $tarefa-&gt;getStatus() === "pendente" ? "selected" : "" ?&gt;&gt;
+    Pendente
+  &lt;/option&gt;
+  &lt;option value="em_andamento"
+    &lt;?= $tarefa-&gt;getStatus() === "em_andamento" ? "selected" : "" ?&gt;&gt;
+    Em andamento
+  &lt;/option&gt;
+  &lt;option value="concluida"
+    &lt;?= $tarefa-&gt;getStatus() === "concluida" ? "selected" : "" ?&gt;&gt;
+    Concluída
+  &lt;/option&gt;
+&lt;/select&gt;</code></pre>
+        <p>O operador ternário <code>condição ? "selected" : ""</code> escreve <code>selected</code> apenas na opção que bate com o status salvo no banco.</p>
+      </div>
+    </div>
+
+    <!-- Q29 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">29</span>
+        <span class="pergunta-q">O que são CSS Custom Properties (variáveis CSS)? Como estão no projeto?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p>Variáveis CSS permitem definir um valor uma vez e reutilizar em todo o arquivo. Definidas em <code>:root</code> e acessadas com <code>var(--nome)</code>.</p>
+        <pre><code><span class="cmt">/* Definição — style.css */</span>
+:root {
+  --verde:       #006437;   <span class="cmt">/* verde Palmeiras */</span>
+  --verde-escuro:#004d29;
+  --preto-soft:  #1a1a1a;
+  --dourado:     #e8c040;
+}
+
+<span class="cmt">/* Uso em qualquer seletor */</span>
+.btn-verde {
+  background: var(--verde);
+  border: 2px solid var(--verde);
+}
+
+header {
+  background: var(--preto-soft);
+  border-bottom: 3px solid var(--verde);
+}</code></pre>
+        <p>Vantagem: se a cor oficial do Palmeiras mudar, basta alterar em <code>:root</code> e atualiza em todo o site de uma vez.</p>
+      </div>
+    </div>
+
+    <!-- Q30 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">30</span>
+        <span class="pergunta-q">O que são <code>&lt;thead&gt;</code>, <code>&lt;tbody&gt;</code> e <code>&lt;caption&gt;</code> em tabelas HTML?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <table>
+          <tr><th>Tag</th><th>Papel</th></tr>
+          <tr><td><code>&lt;thead&gt;</code></td><td>Agrupa as linhas de cabeçalho da tabela (<code>&lt;th&gt;</code>)</td></tr>
+          <tr><td><code>&lt;tbody&gt;</code></td><td>Agrupa as linhas de dados da tabela (<code>&lt;td&gt;</code>)</td></tr>
+          <tr><td><code>&lt;tfoot&gt;</code></td><td>Agrupa linhas de rodapé (totais, somatórios)</td></tr>
+          <tr><td><code>&lt;caption&gt;</code></td><td>Título/descrição da tabela — lido por leitores de tela</td></tr>
+          <tr><td><code>&lt;th&gt;</code></td><td>Célula de cabeçalho (negrito, semântica de título)</td></tr>
+          <tr><td><code>&lt;td&gt;</code></td><td>Célula de dado</td></tr>
+        </table>
+        <pre><code><span class="cmt">&lt;!-- TarefaView.php --&gt;</span>
+&lt;table&gt;
+  &lt;caption style="display:none"&gt;Lista de tarefas do Palmeiras FC&lt;/caption&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;#&lt;/th&gt;&lt;th&gt;Título&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;th&gt;Prazo&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;?php foreach ($tarefas as $t): ?&gt;
+    &lt;tr&gt;&lt;td&gt;...&lt;/td&gt;&lt;/tr&gt;
+    &lt;?php endforeach; ?&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+      </div>
+    </div>
+
+    <!-- DIVISOR PHP extras -->
+    <div style="background:#1a56db;color:#fff;border-radius:8px;padding:12px 20px;margin:28px 0 20px;font-weight:700;font-size:.9rem;letter-spacing:.4px">
+      PHP Avançado · POO · Extras
+    </div>
+
+    <!-- Q31 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">31</span>
+        <span class="pergunta-q">O que é <code>declare(strict_types=1)</code>? Por que está no início dos arquivos?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p>Ativa a verificação estrita de tipos no PHP. Sem isso, o PHP faz conversões automáticas silenciosas que podem causar bugs difíceis de encontrar.</p>
+        <pre><code><span class="cmt">// Sem strict_types: PHP converte silenciosamente</span>
+function somar(int $a, int $b): int { return $a + $b; }
+somar("3", "4"); // funciona, PHP converte string pra int
+
+<span class="cmt">// Com strict_types=1: PHP lança TypeError</span>
+declare(strict_types=1);
+somar("3", "4"); // TypeError: deve ser int, não string</code></pre>
+        <p>Deve ser a <strong>primeira linha do arquivo</strong> (depois de <code>&lt;?php</code>). Se vier depois de qualquer instrução, causa um erro fatal.</p>
+        <div class="alerta alerta-verde">Obriga que os tipos declarados nos parâmetros e retornos das funções sejam respeitados — os bugs aparecem cedo, na hora do desenvolvimento, não em produção.</div>
+      </div>
+    </div>
+
+    <!-- Q32 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">32</span>
+        <span class="pergunta-q">O que faz <code>preg_replace('/\D/', '', $cpf)</code>?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><strong>preg_replace</strong> substitui partes de uma string que casam com uma expressão regular.</p>
+        <ul>
+          <li><code>/\D/</code> — padrão regex: "qualquer caractere que NÃO seja dígito" (<code>\D</code> = não-dígito)</li>
+          <li><code>''</code> — substitui pelo vazio (remove)</li>
+          <li>Resultado: sobram apenas os números</li>
+        </ul>
+        <pre><code><span class="cmt">// Usuario::setCpf() — normaliza CPF antes de validar</span>
+$cpf = preg_replace('/\D/', '', $cpf);
+// "123.456.789-09"  →  "12345678909"
+// "123 456 789 09"  →  "12345678909"
+// "12345678909"     →  "12345678909" (sem mudança)
+
+if (strlen($cpf) !== 11) {
+    throw new \InvalidArgumentException("O CPF deve ter 11 dígitos.");
+}</code></pre>
+        <p>Assim o sistema aceita CPF com ou sem formatação e armazena sempre limpo (só números).</p>
+      </div>
+    </div>
+
+    <!-- Q33 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">33</span>
+        <span class="pergunta-q">O que é <code>try/catch/throw</code> e como funciona no projeto?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p>Mecanismo de tratamento de erros em POO:</p>
+        <ul>
+          <li><code>throw</code> — lança uma exceção (para a execução normal)</li>
+          <li><code>try</code> — bloco onde exceções podem ocorrer</li>
+          <li><code>catch</code> — captura a exceção e define o que fazer</li>
+        </ul>
+        <pre><code><span class="cmt">// No Model: lança exceção se dado inválido</span>
+public function setNome(string $nome): void {
+    if ($nome === "") {
+        throw new \InvalidArgumentException("O nome é obrigatório.");
+    }
+    $this->nome = $nome;
+}
+
+<span class="cmt">// No Controller: captura a exceção e exibe mensagem</span>
+try {
+    $usuario = Usuario::criar(null, $nome, $email, ...);
+    UsuarioDao::cadastrar($usuario);
+    header("Location: ./?p=login"); exit;
+} catch (Exception $e) {
+    self::$msg = $e->getMessage(); // "O nome é obrigatório."
+}
+// Sem o try/catch, a exceção quebraria a página inteira</code></pre>
+        <p>O <code>PDOException</code> (erro de banco) também é capturado com <code>catch (PDOException $e)</code> nos DAOs e relançado para o Controller tratar.</p>
+      </div>
+    </div>
+
+    <!-- Q34 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">34</span>
+        <span class="pergunta-q">O que é <code>rowCount()</code> e onde é usado?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><strong>rowCount()</strong> retorna o número de linhas afetadas pela última instrução SQL (<code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>). Usado para verificar se a operação realmente funcionou.</p>
+        <pre><code><span class="cmt">// TarefaDao::editar() — verifica se o UPDATE alterou algo</span>
+$sql->execute([...]);
+if ($sql->rowCount() !== 1) {
+    throw new Exception("Nenhum registro foi alterado.");
+}
+
+<span class="cmt">// Por que verificar? Se o id não existir no banco,</span>
+<span class="cmt">// o UPDATE roda sem erros mas não afeta nenhuma linha.</span>
+<span class="cmt">// rowCount() == 0 nos avisa disso.</span></code></pre>
+      </div>
+    </div>
+
+    <!-- Q35 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">35</span>
+        <span class="pergunta-q">O que é <code>lastInsertId()</code> e quando é usado?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p>Após um <code>INSERT</code>, <strong>lastInsertId()</strong> retorna o valor do <code>AUTO_INCREMENT</code> gerado para o registro recém-inserido. É chamado no <strong>objeto PDO</strong>, não no statement.</p>
+        <pre><code><span class="cmt">// UsuarioDao::cadastrar() — retorna o id do novo usuário</span>
+$sql->execute();
+return (int) $pdo->lastInsertId();
+//              ↑ é $pdo, não $sql</code></pre>
+        <p>Isso permite que o Controller saiba qual id foi criado, caso precise usar logo em seguida (ex: criar tarefa vinculada ao usuário recém-criado).</p>
+      </div>
+    </div>
+
+    <!-- Q36 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">36</span>
+        <span class="pergunta-q">O que é o operador <code>??</code> (null coalescing)? Como está no projeto?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p><code>$a ?? $b</code> retorna <code>$a</code> se ela existir e não for null, senão retorna <code>$b</code>. É um atalho para <code>isset($a) ? $a : $b</code>.</p>
+        <pre><code><span class="cmt">// Leitura segura de parâmetros que podem não existir</span>
+$page  = $_GET["p"]      ?? "home";   // default: home
+$email = $_POST["email"] ?? "";       // default: string vazia
+$cargo = $_SESSION["cargo"] ?? "";    // default: string vazia
+
+<span class="cmt">// Evita o erro: "Undefined index: p"</span>
+<span class="cmt">// Sem ??: if (isset($_GET["p"])) { $page = $_GET["p"]; } else { $page = "home"; }</span>
+
+<span class="cmt">// Encadeamento: tenta a, depois b, depois c</span>
+$dados["descricao"] ?? ""  // se descricao não vier do banco, usa ""</code></pre>
+      </div>
+    </div>
+
+    <!-- Q37 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">37</span>
+        <span class="pergunta-q">O que é <code>static</code> em PHP? Qual a diferença entre método <code>static</code> e método de instância?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p>Métodos e propriedades <code>static</code> pertencem à <strong>classe</strong>, não a um objeto específico. São chamados com <code>::</code> sem criar instância.</p>
+        <table>
+          <tr><th>static</th><th>instância</th></tr>
+          <tr><td>Chamado com <code>Classe::metodo()</code></td><td>Chamado com <code>$obj->metodo()</code></td></tr>
+          <tr><td>Não tem acesso a <code>$this</code></td><td>Acessa <code>$this</code> (o objeto)</td></tr>
+          <tr><td>Não precisa de <code>new</code></td><td>Precisa de <code>new Classe()</code></td></tr>
+          <tr><td>Usado nos DAOs e Controllers</td><td>Usado nos Models</td></tr>
+        </table>
+        <pre><code><span class="cmt">// Método estático — sem instância</span>
+TarefaDao::listar();         // chama direto na classe
+AuthController::login();
+
+<span class="cmt">// Método de instância — precisa de objeto</span>
+$tarefa = Tarefa::criar(...);  // criar() é static (factory)
+$tarefa->getTitulo();          // getTitulo() é de instância</code></pre>
+      </div>
+    </div>
+
+    <!-- Q38 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">38</span>
+        <span class="pergunta-q">O que são os tipos de retorno <code>void</code>, <code>?int</code>, <code>array</code>, <code>static</code> nas funções?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p>PHP 7+ permite declarar o tipo de retorno depois dos <code>:</code> na assinatura da função. Com <code>strict_types=1</code>, violar o tipo causa <code>TypeError</code>.</p>
+        <table>
+          <tr><th>Tipo</th><th>Significa</th><th>Onde aparece</th></tr>
+          <tr><td><code>void</code></td><td>Não retorna nada</td><td>Controllers, métodos que só salvam</td></tr>
+          <tr><td><code>int</code></td><td>Retorna inteiro</td><td><code>cadastrar()</code> retorna o id</td></tr>
+          <tr><td><code>?int</code></td><td>Retorna int ou null</td><td><code>getId()</code> — id pode ser null (novo)</td></tr>
+          <tr><td><code>?Usuario</code></td><td>Retorna Usuario ou null</td><td><code>buscarPorEmail()</code> — pode não achar</td></tr>
+          <tr><td><code>array</code></td><td>Retorna array</td><td><code>listar()</code> nos DAOs</td></tr>
+          <tr><td><code>static</code></td><td>Retorna instância da própria classe</td><td>Factory Method <code>criar()</code></td></tr>
+          <tr><td><code>string</code></td><td>Retorna string</td><td>Getters como <code>getNome()</code></td></tr>
+        </table>
+        <pre><code>public static function criar(...): static { ... }    // retorna Usuario/Tarefa
+public static function listar(): array { ... }       // retorna array de objetos
+public static function buscarPorId(int $id): ?Tarefa // Tarefa ou null
+public static function excluir(int $id): void { ... } // não retorna</code></pre>
+      </div>
+    </div>
+
+    <!-- Q39 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">39</span>
+        <span class="pergunta-q">O que é encapsulamento em POO e como está aplicado nos Models?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p>Encapsulamento é o princípio de <strong>esconder os dados internos</strong> de uma classe e controlar o acesso por métodos públicos. Os atributos ficam <code>private</code> e só são acessados/modificados de forma controlada.</p>
+        <p>No projeto:</p>
+        <ul>
+          <li>Todos os atributos dos Models são <code>private</code> — ninguém de fora mexe diretamente</li>
+          <li>Getters públicos permitem apenas <em>leitura</em></li>
+          <li>Setters privados validam o dado <em>antes</em> de gravar</li>
+        </ul>
+        <pre><code>class Usuario {
+    private string $cpf;  // ← ninguém acessa diretamente
+
+    // Getter público: só leitura
+    public function getCpf(): string { return $this->cpf; }
+
+    // Setter privado: valida e grava
+    private function setCpf(string $cpf): void {
+        $cpf = preg_replace('/\D/', '', $cpf);
+        if (strlen($cpf) !== 11)
+            throw new \InvalidArgumentException("CPF inválido.");
+        $this->cpf = $cpf;  // só chega aqui se válido
+    }
+}
+
+// De fora:
+$u->cpf = "123";           // ERRO — private
+$u->getCpf();              // OK — getter público
+$u = Usuario::criar(null, ..., "123.456.789-09", ...); // setCpf chamado internamente</code></pre>
+      </div>
+    </div>
+
+    <!-- Q40 -->
+    <div class="pergunta">
+      <div class="pergunta-header" onclick="toggle(this)">
+        <span class="pergunta-num">40</span>
+        <span class="pergunta-q">O que são estruturas de controle? Quais foram usadas no projeto?</span>
+        <span class="pergunta-seta">▼</span>
+      </div>
+      <div class="pergunta-body">
+        <p>Estruturas que controlam o fluxo de execução do código:</p>
+        <table>
+          <tr><th>Estrutura</th><th>Tipo</th><th>Onde aparece</th></tr>
+          <tr><td><code>if / else / elseif</code></td><td>Decisão</td><td>Verificação de permissões, validações</td></tr>
+          <tr><td><code>match()</code></td><td>Decisão múltipla</td><td>Roteamento em index.php, títulos de página</td></tr>
+          <tr><td><code>foreach</code></td><td>Laço</td><td>Percorre arrays de tarefas, usuários, notícias</td></tr>
+          <tr><td><code>while</code> (implícito no PDO)</td><td>Laço</td><td>fetch() internamente lê linha por linha</td></tr>
+          <tr><td><code>try / catch</code></td><td>Controle de erros</td><td>Todos os DAOs e Controllers</td></tr>
+        </table>
+        <pre><code><span class="cmt">// if — controle de permissão</span>
+if (!$autenticado && !in_array($page, $paginasPublicas)) { ... }
+
+<span class="cmt">// foreach — laço nas Views</span>
+foreach ($tarefas as $tarefa) {
+    // imprime cada linha da tabela
+}
+
+<span class="cmt">// foreach alternativo (template PHP)</span>
+&lt;?php foreach ($tarefas as $tarefa): ?&gt;
+  &lt;tr&gt;&lt;td&gt;&lt;?= $tarefa->getTitulo() ?&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;?php endforeach; ?&gt;
+
+<span class="cmt">// match — roteamento</span>
+match($page) {
+    "login"   => AuthController::login(),
+    "tarefas" => TarefaController::listar(),
+    default   => require_once("./view/404.php"),
+};</code></pre>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- SEÇÃO ÁRVORES -->
+  <section class="secao" id="arvores">
+    <h2 class="secao-titulo">Árvore do Projeto + Fluxos Visuais</h2>
+
+    <!-- ÁRVORE DE ARQUIVOS -->
+    <div class="passo">
+      <div class="passo-header">
+        <div class="passo-num" style="background:#89b4fa">📁</div>
+        <div>
+          <div class="passo-titulo">Estrutura de pastas e arquivos</div>
+          <div class="passo-arquivo">C:\xampp\htdocs\palmeiras\</div>
+        </div>
+      </div>
+      <div class="passo-corpo">
+        <div class="tree">
+          <ul>
+            <li><span class="icon-pasta">📁</span> palmeiras/ <span class="desc">— raiz do projeto (document root do Apache)</span>
+              <ul>
+                <li><span class="icon-php">📄</span> index.php <span class="desc">— único ponto de entrada; sessão + roteamento</span></li>
+                <li><span class="icon-php">📄</span> Autoload.php <span class="desc">— spl_autoload_register, carrega classes automaticamente</span></li>
+                <li><span class="icon-php">📄</span> menu.php <span class="desc">— navegação condicional (público vs autenticado)</span></li>
+                <li><span class="icon-pasta">📁</span> model/ <span class="desc">— entidades (representação dos dados)</span>
+                  <ul>
+                    <li><span class="icon-php">📄</span> Usuario.php <span class="desc">— id, nome, email, senha, cpf, dataNascimento, cargo, posicao, tokenLembrar</span></li>
+                    <li><span class="icon-php">📄</span> Tarefa.php <span class="desc">— id, titulo, descricao, status, prazo, criadoPor, designadoPara</span></li>
+                    <li><span class="icon-php">📄</span> Noticia.php <span class="desc">— id, titulo, conteudo, criadoPor, criadoEm</span></li>
+                  </ul>
+                </li>
+                <li><span class="icon-pasta">📁</span> dal/ <span class="desc">— Data Access Layer (banco de dados)</span>
+                  <ul>
+                    <li><span class="icon-php">📄</span> Conn.php <span class="desc">— conexão PDO singleton (porta 3307)</span></li>
+                    <li><span class="icon-php">📄</span> UsuarioDao.php <span class="desc">— CRUD + buscarPorToken + atualizarSenha</span></li>
+                    <li><span class="icon-php">📄</span> TarefaDao.php <span class="desc">— CRUD de tarefas</span></li>
+                    <li><span class="icon-php">📄</span> NoticiaDao.php <span class="desc">— CRUD + listar(limite) para home</span></li>
+                  </ul>
+                </li>
+                <li><span class="icon-pasta">📁</span> controller/ <span class="desc">— lógica de negócio</span>
+                  <ul>
+                    <li><span class="icon-php">📄</span> AuthController.php <span class="desc">— login, registrar, recuperar, logout</span></li>
+                    <li><span class="icon-php">📄</span> TarefaController.php <span class="desc">— listar, cadastrar, editar, deletar</span></li>
+                    <li><span class="icon-php">📄</span> UsuarioController.php <span class="desc">— listar, cadastrar, editar, deletar</span></li>
+                    <li><span class="icon-php">📄</span> NoticiaController.php <span class="desc">— listar, ver, cadastrar, editar, deletar</span></li>
+                  </ul>
+                </li>
+                <li><span class="icon-pasta">📁</span> view/ <span class="desc">— geração do HTML</span>
+                  <ul>
+                    <li><span class="icon-php">📄</span> AuthView.php <span class="desc">— formularioLogin, formularioRegistro, formularioRecuperar</span></li>
+                    <li><span class="icon-php">📄</span> TarefaView.php <span class="desc">— listar, formulario, formularioStatus</span></li>
+                    <li><span class="icon-php">📄</span> UsuarioView.php <span class="desc">— listar, formulario</span></li>
+                    <li><span class="icon-php">📄</span> NoticiaView.php <span class="desc">— listar, ver, formulario</span></li>
+                    <li><span class="icon-php">📄</span> home.php <span class="desc">— página pública com hero + últimas notícias</span></li>
+                    <li><span class="icon-php">📄</span> sobre.php <span class="desc">— página pública "Sobre o sistema"</span></li>
+                    <li><span class="icon-php">📄</span> 404.php <span class="desc">— página de erro</span></li>
+                  </ul>
+                </li>
+                <li><span class="icon-pasta">📁</span> util/ <span class="desc">— utilitários compartilhados</span>
+                  <ul>
+                    <li><span class="icon-php">📄</span> Functions.php <span class="desc">— preparaTexto(): trim + htmlentities</span></li>
+                  </ul>
+                </li>
+                <li><span class="icon-pasta">📁</span> assets/ <span class="desc">— arquivos estáticos</span>
+                  <ul>
+                    <li><span class="icon-css">🎨</span> style.css <span class="desc">— CSS completo com variáveis Palmeiras, responsivo</span></li>
+                  </ul>
+                </li>
+                <li><span class="icon-pasta">📁</span> sql/ <span class="desc">— banco de dados</span>
+                  <ul>
+                    <li><span class="icon-sql">🗄</span> banco.sql <span class="desc">— CREATE TABLE usuarios, tarefas, noticias</span></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÁRVORE: FLUXO DE UMA REQUISIÇÃO -->
+    <div class="passo" style="margin-top:20px">
+      <div class="passo-header">
+        <div class="passo-num" style="background:#a6e3a1;color:#1e1e2e">🔄</div>
+        <div>
+          <div class="passo-titulo">Fluxo completo de uma requisição — ex: listar tarefas</div>
+          <div class="passo-arquivo">GET /?p=tarefas → TarefaController → TarefaDao → TarefaView</div>
+        </div>
+      </div>
+      <div class="passo-corpo">
+        <div class="tree-fluxo">
+          <ul>
+            <li><span class="node-req">🌐 Navegador</span> — faz GET para <code>http://localhost/palmeiras/?p=tarefas</code>
+              <ul>
+                <li><span class="conector">└─</span> <span class="node-req">📨 Apache</span> — recebe a requisição, entrega para o PHP
+                  <ul>
+                    <li><span class="conector">└─</span> <span class="node-req">⚙ index.php</span>
+                      <ul>
+                        <li><span class="conector">├─</span> <span class="node-ses">session_start()</span> — carrega <code>$_SESSION</code> do servidor</li>
+                        <li><span class="conector">├─</span> <span class="node-ses">session_regenerate_id(true)</span> — renova ID de sessão</li>
+                        <li><span class="conector">├─</span> <span class="node-note">require Autoload.php → registra autoloader</span></li>
+                        <li><span class="conector">├─</span> <span class="node-note">gera CSRF token se não existir</span></li>
+                        <li><span class="conector">├─</span> <span class="node-note">lê $_GET["p"] = "tarefas"</span></li>
+                        <li><span class="conector">├─</span> <span class="node-ses">verifica $_SESSION["id_usuario"]</span> — autenticado? ✓</li>
+                        <li><span class="conector">└─</span> <span class="node-ctrl">match("tarefas") → TarefaController::listar()</span>
+                          <ul>
+                            <li><span class="conector">├─</span> <span class="node-note">lê $_GET["order"] para ordenação</span></li>
+                            <li><span class="conector">├─</span> <span class="node-dao">TarefaDao::listar()</span>
+                              <ul>
+                                <li><span class="conector">├─</span> <span class="node-dao">Conn::getConn()</span> — pega conexão PDO (cria se 1ª vez)</li>
+                                <li><span class="conector">├─</span> <span class="node-dao">$pdo->prepare("SELECT * FROM tarefas")</span></li>
+                                <li><span class="conector">├─</span> <span class="node-dao">$sql->execute()</span></li>
+                                <li><span class="conector">├─</span> <span class="node-db">🗄 MySQL</span> — executa query, retorna linhas</li>
+                                <li><span class="conector">├─</span> <span class="node-dao">$sql->fetchAll(FETCH_ASSOC)</span> — lê todos os resultados</li>
+                                <li><span class="conector">└─</span> <span class="node-model">foreach → Tarefa::criar(...)</span> — cria objetos Tarefa[]
+                                  <ul>
+                                    <li><span class="conector">└─</span> <span class="node-note">retorna array: Tarefa[]</span></li>
+                                  </ul>
+                                </li>
+                              </ul>
+                            </li>
+                            <li><span class="conector">├─</span> <span class="node-dao">UsuarioDao::listar()</span> — busca nomes para o mapa</li>
+                            <li><span class="conector">├─</span> <span class="node-note">usort($tarefas, fn($a,$b) => ...)</span> — ordena</li>
+                            <li><span class="conector">└─</span> <span class="node-view">TarefaView::listar($tarefas, $mapaUsuarios)</span>
+                              <ul>
+                                <li><span class="conector">├─</span> <span class="node-note">verifica cargo (admin/membro) para exibir ações</span></li>
+                                <li><span class="conector">└─</span> <span class="node-view">imprime HTML: &lt;table&gt;&lt;tr&gt;...&lt;/tr&gt;&lt;/table&gt;</span></li>
+                              </ul>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li style="margin-top:8px"><span class="node-req">🌐 Navegador</span> — recebe HTML completo e renderiza a página</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÁRVORE: FLUXO DE LOGIN -->
+    <div class="passo" style="margin-top:20px">
+      <div class="passo-header">
+        <div class="passo-num" style="background:#cba6f7;color:#1e1e2e">🔐</div>
+        <div>
+          <div class="passo-titulo">Árvore de decisão do login</div>
+          <div class="passo-arquivo">AuthController::login() — todos os caminhos possíveis</div>
+        </div>
+      </div>
+      <div class="passo-corpo">
+        <div class="tree-fluxo">
+          <ul>
+            <li><span class="node-ctrl">AuthController::login()</span>
+              <ul>
+                <li><span class="conector">├─</span> <span class="node-ses">Existe $_COOKIE["palmeiras_token"]?</span>
+                  <ul>
+                    <li><span class="conector">├─ SIM →</span> <span class="node-dao">UsuarioDao::buscarPorToken(sha256(cookie))</span>
+                      <ul>
+                        <li><span class="conector">├─ Encontrou →</span> <span class="node-ses">preenche $_SESSION</span> → <span class="node-view">redirect home ✓</span></li>
+                        <li><span class="conector">└─ Não encontrou →</span> <span class="node-note">apaga cookie inválido, continua</span></li>
+                      </ul>
+                    </li>
+                    <li><span class="conector">└─ NÃO →</span> <span class="node-note">continua abaixo</span></li>
+                  </ul>
+                </li>
+                <li><span class="conector">├─</span> <span class="node-note">É POST com $_POST["email"]?</span>
+                  <ul>
+                    <li><span class="conector">├─ SIM →</span> <span class="node-note">valida CSRF (hash_equals)</span>
+                      <ul>
+                        <li><span class="conector">├─ Falhou →</span> <span class="node-req">die("Falha no acesso") ✗</span></li>
+                        <li><span class="conector">└─ OK →</span> <span class="node-dao">UsuarioDao::buscarPorEmail(email)</span>
+                          <ul>
+                            <li><span class="conector">├─ null →</span> <span class="node-note">msg: "E-mail ou senha incorretos"</span></li>
+                            <li><span class="conector">└─ Encontrou →</span> <span class="node-ses">password_verify(senha, hash)</span>
+                              <ul>
+                                <li><span class="conector">├─ false →</span> <span class="node-note">msg: "E-mail ou senha incorretos"</span></li>
+                                <li><span class="conector">└─ true →</span> <span class="node-ses">session_regenerate_id + $_SESSION</span>
+                                  <ul>
+                                    <li><span class="conector">├─</span> <span class="node-note">lembrar-me? → gera cookie 30 dias</span></li>
+                                    <li><span class="conector">└─</span> <span class="node-view">redirect home ✓</span></li>
+                                  </ul>
+                                </li>
+                              </ul>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                    <li><span class="conector">└─ NÃO (GET) →</span> <span class="node-view">AuthView::formularioLogin() — exibe formulário</span></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÁRVORE: MVC -->
+    <div class="passo" style="margin-top:20px">
+      <div class="passo-header">
+        <div class="passo-num" style="background:#fab387;color:#1e1e2e">🏗</div>
+        <div>
+          <div class="passo-titulo">Arquitetura MVC — relacionamento entre camadas</div>
+          <div class="passo-arquivo">Cada camada tem responsabilidade única</div>
+        </div>
+      </div>
+      <div class="passo-corpo">
+        <div class="tree-fluxo">
+          <ul>
+            <li><span class="node-req">index.php</span> <span class="node-note">— roteador: recebe URL, chama Controller</span>
+              <ul>
+                <li><span class="conector">└─</span> <span class="node-ctrl">CONTROLLER</span> <span class="node-note">— lógica de negócio: valida, processa, decide</span>
+                  <ul>
+                    <li><span class="conector">├─</span> <span class="node-ctrl">AuthController</span> <span class="node-note">login · registro · recuperação · logout</span></li>
+                    <li><span class="conector">├─</span> <span class="node-ctrl">TarefaController</span> <span class="node-note">listar · cadastrar · editar · deletar</span></li>
+                    <li><span class="conector">├─</span> <span class="node-ctrl">UsuarioController</span> <span class="node-note">listar · cadastrar · editar · deletar</span></li>
+                    <li><span class="conector">└─</span> <span class="node-ctrl">NoticiaController</span> <span class="node-note">listar · ver · cadastrar · editar · deletar</span>
+                      <ul>
+                        <li><span class="conector">├─ usa →</span> <span class="node-dao">DAL (Data Access Layer)</span>
+                          <ul>
+                            <li><span class="conector">├─</span> <span class="node-dao">UsuarioDao</span> — SQL de usuários</li>
+                            <li><span class="conector">├─</span> <span class="node-dao">TarefaDao</span> — SQL de tarefas</li>
+                            <li><span class="conector">├─</span> <span class="node-dao">NoticiaDao</span> — SQL de notícias</li>
+                            <li><span class="conector">└─</span> <span class="node-dao">Conn</span> — PDO singleton
+                              <ul>
+                                <li><span class="conector">└─ conecta →</span> <span class="node-db">🗄 MySQL: palmeirasdb</span>
+                                  <ul>
+                                    <li><span class="conector">├─</span> <span class="node-db">tabela: usuarios</span></li>
+                                    <li><span class="conector">├─</span> <span class="node-db">tabela: tarefas</span></li>
+                                    <li><span class="conector">└─</span> <span class="node-db">tabela: noticias</span></li>
+                                  </ul>
+                                </li>
+                              </ul>
+                            </li>
+                          </ul>
+                        </li>
+                        <li><span class="conector">├─ popula →</span> <span class="node-model">MODEL</span>
+                          <ul>
+                            <li><span class="conector">├─</span> <span class="node-model">Usuario</span> <span class="node-note">private: id, nome, email, cpf… + criar() + getters</span></li>
+                            <li><span class="conector">├─</span> <span class="node-model">Tarefa</span> <span class="node-note">private: id, titulo, status… + criar() + getters</span></li>
+                            <li><span class="conector">└─</span> <span class="node-model">Noticia</span> <span class="node-note">private: id, titulo, conteudo… + criar() + getters</span></li>
+                          </ul>
+                        </li>
+                        <li><span class="conector">└─ passa para →</span> <span class="node-view">VIEW</span> <span class="node-note">— só gera HTML, não acessa banco</span>
+                          <ul>
+                            <li><span class="conector">├─</span> <span class="node-view">AuthView</span> — forms de login/registro/recuperar</li>
+                            <li><span class="conector">├─</span> <span class="node-view">TarefaView</span> — tabela de tarefas + formulários</li>
+                            <li><span class="conector">├─</span> <span class="node-view">UsuarioView</span> — lista de jogadores + formulários</li>
+                            <li><span class="conector">├─</span> <span class="node-view">NoticiaView</span> — cards de notícias + detalhe</li>
+                            <li><span class="conector">├─</span> <span class="node-view">home.php</span> — página pública (hero + últimas notícias)</li>
+                            <li><span class="conector">└─</span> <span class="node-view">sobre.php</span> — página pública "Sobre"</li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- SEÇÃO 2 — PASSO A PASSO -->
+  <section class="secao" id="passo-a-passo">
+    <h2 class="secao-titulo">Passo a Passo Completo do Código</h2>
+
+    <!-- PASSO 1 -->
+    <div class="passo" id="p1">
+      <div class="passo-header">
+        <div class="passo-num">1</div>
+        <div>
+          <div class="passo-titulo">Entrada da aplicação — Roteamento</div>
+          <div class="passo-arquivo">index.php</div>
+        </div>
+      </div>
+      <div class="passo-corpo">
+        <p>É o <strong>único arquivo PHP que o navegador acessa</strong>. Toda URL do sistema passa por ele (<code>?p=home</code>, <code>?p=login</code>, etc.).</p>
+        <p>Sequência de execução:</p>
+        <ul>
+          <li><strong>1.</strong> <code>session_start()</code> + <code>session_regenerate_id(true)</code> — inicia/renova sessão</li>
+          <li><strong>2.</strong> <code>require_once "./Autoload.php"</code> — ativa o carregamento automático de classes</li>
+          <li><strong>3.</strong> Gera o token CSRF se não existir</li>
+          <li><strong>4.</strong> Lê <code>$_GET["p"]</code> para saber qual página foi pedida</li>
+          <li><strong>5.</strong> Verifica permissão (logado ou não)</li>
+          <li><strong>6.</strong> Monta o HTML com header/nav/footer e executa o <code>match($page)</code> dentro do <code>&lt;main&gt;</code></li>
+        </ul>
+        <pre><code><span class="var">$page</span>      = <span class="var">$_GET</span>[<span class="str">"p"</span>] ?? <span class="str">"home"</span>; <span class="cmt">// página padrão é home</span>
+<span class="var">$autenticado</span> = isset(<span class="var">$_SESSION</span>[<span class="str">"id_usuario"</span>]);
+
+<span class="cmt">// Não logado em página privada → manda pro login</span>
+<span class="kw">if</span> (!<span class="var">$autenticado</span> &amp;&amp; !<span class="fn">in_array</span>(<span class="var">$page</span>, <span class="var">$paginasPublicas</span>)) {
+    <span class="fn">header</span>(<span class="str">"Location: ./?p=login"</span>); <span class="kw">exit</span>;
+}
+
+<span class="cmt">// Dentro do &lt;main&gt;: roteamento</span>
+<span class="fn">match</span>(<span class="var">$page</span>) {
+    <span class="str">"tarefas"</span>  => <span class="fn">TarefaController</span>::<span class="fn">listar</span>(),
+    <span class="str">"login"</span>    => <span class="fn">AuthController</span>::<span class="fn">login</span>(),
+    <span class="kw">default</span>    => <span class="kw">require_once</span>(<span class="str">"./view/404.php"</span>),
+};</code></pre>
+      </div>
+    </div>
+
+    <!-- PASSO 2 -->
+    <div class="passo" id="p2">
+      <div class="passo-header">
+        <div class="passo-num">2</div>
+        <div>
+          <div class="passo-titulo">Autoload — carregamento automático de classes</div>
+          <div class="passo-arquivo">Autoload.php</div>
+        </div>
+      </div>
+      <div class="passo-corpo">
+        <p>Toda vez que o PHP encontra uma classe ainda não carregada, chama a função registrada aqui, que converte o namespace em caminho de arquivo e faz o <code>require_once</code>.</p>
+        <pre><code><span class="fn">spl_autoload_register</span>(<span class="kw">function</span> (<span class="var">$namespace</span>) {
+    <span class="cmt">// "App\Controller\AuthController"</span>
+    <span class="cmt">// → remove "App\"  → "Controller\AuthController"</span>
+    <span class="cmt">// → troca "\" por "/"  → "Controller/AuthController"</span>
+    <span class="cmt">// → adiciona ".php"  → "Controller/AuthController.php"</span>
+    <span class="var">$arquivo</span> = __DIR__ . DIRECTORY_SEPARATOR
+        . <span class="fn">str_replace</span>([<span class="str">'App\\'</span>, <span class="str">'\\'</span>], [<span class="str">''</span>, DIRECTORY_SEPARATOR], <span class="var">$namespace</span>)
+        . <span class="str">".php"</span>;
+    <span class="kw">if</span> (<span class="fn">file_exists</span>(<span class="var">$arquivo</span>)) { <span class="kw">require_once</span> <span class="var">$arquivo</span>; }
+});</code></pre>
+      </div>
+    </div>
+
+    <!-- PASSO 3 -->
+    <div class="passo" id="p3">
+      <div class="passo-header">
+        <div class="passo-num">3</div>
+        <div>
+          <div class="passo-titulo">Conexão com o banco — Padrão Singleton</div>
+          <div class="passo-arquivo">dal/Conn.php</div>
+        </div>
+      </div>
+      <div class="passo-corpo">
+        <p>O padrão <strong>Singleton</strong> garante que a conexão com o banco seja criada <em>apenas uma vez</em> por requisição, mesmo que vários DAOs a solicitem.</p>
+        <ul>
+          <li><code>private static ?PDO $conn = null</code> — armazena a instância única</li>
+          <li><code>getConn()</code> — se <code>$conn</code> for nula, cria; senão retorna a existente</li>
+        </ul>
+        <pre><code><span class="kw">abstract class</span> <span class="fn">Conn</span> {
+    <span class="kw">private static</span> ?PDO <span class="var">$conn</span> = <span class="kw">null</span>;
+
+    <span class="kw">public static function</span> <span class="fn">getConn</span>(): PDO {
+        <span class="kw">if</span> (<span class="kw">self</span>::<span class="var">$conn</span> === <span class="kw">null</span>) {         <span class="cmt">// só conecta na 1ª chamada</span>
+            <span class="kw">self</span>::<span class="var">$conn</span> = <span class="kw">new</span> <span class="fn">PDO</span>(
+                <span class="str">"mysql:host=localhost:3307;dbname=palmeirasdb"</span>,
+                <span class="str">"root"</span>, <span class="str">""</span>
+            );
+        }
+        <span class="kw">return self</span>::<span class="var">$conn</span>;         <span class="cmt">// retorna sempre a mesma</span>
+    }
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- PASSO 4 -->
+    <div class="passo" id="p4">
+      <div class="passo-header">
+        <div class="passo-num">4</div>
+        <div>
+          <div class="passo-titulo">Models — representação das entidades</div>
+          <div class="passo-arquivo">model/Usuario.php · model/Tarefa.php · model/Noticia.php</div>
+        </div>
+      </div>
+      <div class="passo-corpo">
+        <p>Cada Model representa uma tabela do banco. Princípios aplicados:</p>
+        <ul>
+          <li><strong>Encapsulamento:</strong> todas as propriedades são <code>private</code></li>
+          <li><strong>Imutabilidade após criação:</strong> só existem getters públicos (sem setters públicos)</li>
+          <li><strong>Validação na origem:</strong> setters privados lançam exceção se dado for inválido</li>
+          <li><strong>Factory Method:</strong> único ponto de entrada é o método estático <code>criar()</code></li>
+        </ul>
+        <pre><code><span class="kw">class</span> <span class="fn">Tarefa</span> {
+    <span class="kw">private</span> ?<span class="kw">int</span>    <span class="var">$id</span>;
+    <span class="kw">private string</span>  <span class="var">$titulo</span>;
+    <span class="kw">private string</span>  <span class="var">$status</span>;   <span class="cmt">// pendente|em_andamento|concluida</span>
+
+    <span class="kw">private function</span> <span class="fn">__construct</span>() {}   <span class="cmt">// bloqueia new Tarefa()</span>
+
+    <span class="kw">public static function</span> <span class="fn">criar</span>(...): <span class="kw">static</span> {
+        <span class="var">$t</span> = <span class="kw">new static</span>();
+        <span class="var">$t</span>-><span class="fn">setTitulo</span>(<span class="var">$titulo</span>);   <span class="cmt">// valida: não pode ser vazio</span>
+        <span class="var">$t</span>-><span class="fn">setStatus</span>(<span class="var">$status</span>);   <span class="cmt">// valida: deve estar na whitelist</span>
+        <span class="kw">return</span> <span class="var">$t</span>;
+    }
+
+    <span class="kw">public function</span> <span class="fn">setStatus</span>(<span class="kw">string</span> <span class="var">$status</span>): <span class="kw">void</span> {
+        <span class="kw">if</span> (!<span class="fn">in_array</span>(<span class="var">$status</span>, [<span class="str">"pendente"</span>, <span class="str">"em_andamento"</span>, <span class="str">"concluida"</span>])) {
+            <span class="kw">throw new</span> \<span class="fn">InvalidArgumentException</span>(<span class="str">"Status inválido."</span>);
+        }
+        <span class="kw">$this</span>-><span class="var">status</span> = <span class="var">$status</span>;
+    }
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- PASSO 5 -->
+    <div class="passo" id="p5">
+      <div class="passo-header">
+        <div class="passo-num">5</div>
+        <div>
+          <div class="passo-titulo">DAOs — acesso ao banco de dados (CRUD)</div>
+          <div class="passo-arquivo">dal/UsuarioDao.php · dal/TarefaDao.php · dal/NoticiaDao.php</div>
+        </div>
+      </div>
+      <div class="passo-corpo">
+        <p>O DAO (<em>Data Access Object</em>) é o único lugar do projeto que faz SQL. Todo o resto do código usa objetos — nunca escreve SQL diretamente.</p>
+        <p>Operações presentes em cada DAO:</p>
+        <table>
+          <tr><th>Método</th><th>SQL</th><th>Retorno</th></tr>
+          <tr><td><code>cadastrar()</code></td><td>INSERT</td><td>int (id inserido)</td></tr>
+          <tr><td><code>listar()</code></td><td>SELECT *</td><td>array de objetos</td></tr>
+          <tr><td><code>buscarPorId()</code></td><td>SELECT WHERE id</td><td>objeto ou null</td></tr>
+          <tr><td><code>editar()</code></td><td>UPDATE</td><td>void</td></tr>
+          <tr><td><code>excluir()</code></td><td>DELETE</td><td>void</td></tr>
+        </table>
+        <pre><code><span class="cmt">// Padrão de todos os métodos do DAO</span>
+<span class="kw">public static function</span> <span class="fn">buscarPorId</span>(<span class="kw">int</span> <span class="var">$id</span>): ?Tarefa {
+    <span class="kw">try</span> {
+        <span class="var">$pdo</span> = <span class="fn">Conn</span>::<span class="fn">getConn</span>();               <span class="cmt">// pega conexão singleton</span>
+        <span class="var">$sql</span> = <span class="var">$pdo</span>-><span class="fn">prepare</span>(<span class="str">"SELECT * FROM tarefas WHERE id = ?"</span>);
+        <span class="var">$sql</span>-><span class="fn">execute</span>([<span class="var">$id</span>]);                  <span class="cmt">// passa valor seguro</span>
+        <span class="var">$dados</span> = <span class="var">$sql</span>-><span class="fn">fetch</span>(PDO::FETCH_ASSOC);  <span class="cmt">// lê uma linha</span>
+        <span class="kw">if</span> (!<span class="var">$dados</span>) <span class="kw">return null</span>;             <span class="cmt">// não encontrou</span>
+        <span class="kw">return</span> <span class="fn">Tarefa</span>::<span class="fn">criar</span>(                  <span class="cmt">// cria objeto validado</span>
+            (int) <span class="var">$dados</span>[<span class="str">"id"</span>],
+            <span class="var">$dados</span>[<span class="str">"titulo"</span>], ...
+        );
+    } <span class="kw">catch</span> (PDOException <span class="var">$e</span>) { <span class="kw">throw</span> <span class="var">$e</span>; }
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- PASSO 6 -->
+    <div class="passo" id="p6">
+      <div class="passo-header">
+        <div class="passo-num">6</div>
+        <div>
+          <div class="passo-titulo">Controllers — lógica de negócio</div>
+          <div class="passo-arquivo">controller/AuthController.php · TarefaController.php · UsuarioController.php · NoticiaController.php</div>
+        </div>
+      </div>
+      <div class="passo-corpo">
+        <p>O Controller é o <em>cérebro</em> de cada operação. Ele:</p>
+        <ul>
+          <li>Verifica permissão (<code>$_SESSION["cargo"]</code>)</li>
+          <li>Valida o CSRF (<code>hash_equals</code>)</li>
+          <li>Sanitiza os dados recebidos (<code>Util::preparaTexto</code>)</li>
+          <li>Chama o DAO correspondente</li>
+          <li>Redireciona ou chama a View</li>
+        </ul>
+        <pre><code><span class="cmt">// Estrutura padrão de um método de controller</span>
+<span class="kw">public static function</span> <span class="fn">cadastrar</span>(): <span class="kw">void</span> {
+    <span class="cmt">// 1. Verificar permissão</span>
+    <span class="kw">if</span> (<span class="var">$_SESSION</span>[<span class="str">"cargo"</span>] !== <span class="str">"admin"</span>) {
+        <span class="fn">header</span>(<span class="str">"Location: ./?p=tarefas"</span>); <span class="kw">exit</span>;
+    }
+
+    <span class="cmt">// 2. Processar POST se formulário foi enviado</span>
+    <span class="kw">if</span> (<span class="var">$_SERVER</span>[<span class="str">"REQUEST_METHOD"</span>] === <span class="str">"POST"</span> &amp;&amp; isset(<span class="var">$_POST</span>[<span class="str">"titulo"</span>])) {
+        <span class="cmt">// 3. Validar CSRF</span>
+        <span class="kw">if</span> (!<span class="fn">hash_equals</span>(<span class="var">$_SESSION</span>[<span class="str">"csrf_token"</span>], <span class="var">$_POST</span>[<span class="str">"csrf"</span>] ?? <span class="str">""</span>)) {
+            <span class="kw">die</span>(<span class="str">"Falha no acesso"</span>);
+        }
+        <span class="cmt">// 4. Sanitizar dados</span>
+        <span class="var">$titulo</span> = <span class="fn">Util</span>::<span class="fn">preparaTexto</span>(<span class="var">$_POST</span>[<span class="str">"titulo"</span>]);
+        <span class="cmt">// 5. Criar objeto Model + chamar DAO</span>
+        <span class="kw">try</span> {
+            <span class="var">$tarefa</span> = <span class="fn">Tarefa</span>::<span class="fn">criar</span>(<span class="kw">null</span>, <span class="var">$titulo</span>, ...);
+            <span class="fn">TarefaDao</span>::<span class="fn">cadastrar</span>(<span class="var">$tarefa</span>);
+            <span class="fn">header</span>(<span class="str">"Location: ./?p=tarefas"</span>); <span class="kw">exit</span>;
+        } <span class="kw">catch</span> (Exception <span class="var">$e</span>) {
+            <span class="kw">self</span>::<span class="var">$msg</span> = <span class="var">$e</span>-><span class="fn">getMessage</span>();
+        }
+    }
+    <span class="cmt">// 6. Exibe o formulário (GET ou erro no POST)</span>
+    <span class="fn">TarefaView</span>::<span class="fn">formulario</span>(<span class="kw">self</span>::<span class="var">$msg</span>, <span class="kw">null</span>, <span class="var">$usuarios</span>);
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- PASSO 7 -->
+    <div class="passo" id="p7">
+      <div class="passo-header">
+        <div class="passo-num">7</div>
+        <div>
+          <div class="passo-titulo">Views — geração do HTML</div>
+          <div class="passo-arquivo">view/TarefaView.php · AuthView.php · NoticiaView.php · UsuarioView.php</div>
+        </div>
+      </div>
+      <div class="passo-corpo">
+        <p>A View recebe dados prontos do Controller e só faz uma coisa: gerar HTML. Nunca acessa o banco ou processa lógica de negócio.</p>
+        <pre><code><span class="cmt">// Recebe array de objetos, mapa de usuários e exibe tabela</span>
+<span class="kw">public static function</span> <span class="fn">listar</span>(<span class="kw">array</span> <span class="var">$tarefas</span>, <span class="kw">array</span> <span class="var">$mapaUsuarios</span>): <span class="kw">void</span> {
+    <span class="var">$isAdmin</span> = (<span class="var">$_SESSION</span>[<span class="str">"cargo"</span>] ?? <span class="str">""</span>) === <span class="str">"admin"</span>;
+    <span class="cmt">// PHP inline HTML — mistura PHP com HTML de forma controlada</span>
+    ?&gt;
+    &lt;table&gt;
+    &lt;?php foreach (<span class="var">$tarefas</span> <span class="kw">as</span> <span class="var">$tarefa</span>): ?&gt;
+        &lt;tr&gt;
+            &lt;td&gt;&lt;?= <span class="var">$tarefa</span>-&gt;<span class="fn">getTitulo</span>() ?&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;?= <span class="var">$tarefa</span>-&gt;<span class="fn">getStatus</span>() ?&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;?php endforeach; ?&gt;
+    &lt;/table&gt;
+    &lt;?php
+}</code></pre>
+        <p>O <code>&lt;?= ... ?&gt;</code> é equivalente a <code>&lt;?php echo ... ?&gt;</code> — uma shorthand para imprimir valores.</p>
+      </div>
+    </div>
+
+    <!-- PASSO 8 -->
+    <div class="passo" id="p8">
+      <div class="passo-header">
+        <div class="passo-num">8</div>
+        <div>
+          <div class="passo-titulo">Fluxo completo: Login de usuário</div>
+          <div class="passo-arquivo">controller/AuthController.php → dal/UsuarioDao.php → view/AuthView.php</div>
+        </div>
+      </div>
+      <div class="passo-corpo">
+        <div class="fluxo">
+          <div class="fluxo-item"><span class="seta">1</span> Usuário acessa <code>?p=login</code> (GET)</div>
+          <div class="fluxo-item"><span class="seta">2</span> <code>AuthController::login()</code> é chamado</div>
+          <div class="fluxo-item"><span class="seta">3</span> Verifica cookie <code>palmeiras_token</code> → se válido, loga direto</div>
+          <div class="fluxo-item"><span class="seta">4</span> Como é GET, chama <code>AuthView::formularioLogin(null)</code></div>
+          <div class="fluxo-item"><span class="seta">5</span> View renderiza formulário com token CSRF embutido</div>
+          <div class="fluxo-item"><span class="seta">6</span> Usuário preenche e clica "Entrar" (POST)</div>
+          <div class="fluxo-item"><span class="seta">7</span> Controller verifica CSRF, sanitiza email, chama <code>UsuarioDao::buscarPorEmail()</code></div>
+          <div class="fluxo-item"><span class="seta">8</span> DAO faz SELECT no banco, retorna objeto <code>Usuario</code> ou null</div>
+          <div class="fluxo-item"><span class="seta">9</span> <code>password_verify($senha, $usuario->getSenha())</code> valida a senha</div>
+          <div class="fluxo-item"><span class="seta">10</span> Sucesso: <code>session_regenerate_id(true)</code>, preenche <code>$_SESSION</code>, gera cookie se "lembrar-me"</div>
+          <div class="fluxo-item"><span class="seta">11</span> <code>header("Location: ./")</code> → redireciona para home logado</div>
+        </div>
+        <pre><code><span class="cmt">// Sucesso no login</span>
+<span class="fn">session_regenerate_id</span>(<span class="kw">true</span>);
+<span class="var">$_SESSION</span>[<span class="str">"id_usuario"</span>]   = <span class="var">$usuario</span>-><span class="fn">getId</span>();
+<span class="var">$_SESSION</span>[<span class="str">"nome_usuario"</span>] = <span class="var">$usuario</span>-><span class="fn">getNome</span>();
+<span class="var">$_SESSION</span>[<span class="str">"cargo"</span>]        = <span class="var">$usuario</span>-><span class="fn">getCargo</span>(); <span class="cmt">// "admin" ou "membro"</span>
+<span class="fn">header</span>(<span class="str">"Location: ./"</span>); <span class="kw">exit</span>;</code></pre>
+      </div>
+    </div>
+
+    <!-- PASSO 9 -->
+    <div class="passo" id="p9">
+      <div class="passo-header">
+        <div class="passo-num">9</div>
+        <div>
+          <div class="passo-titulo">Fluxo completo: Cadastro de tarefa</div>
+          <div class="passo-arquivo">controller/TarefaController.php → dal/TarefaDao.php</div>
+        </div>
+      </div>
+      <div class="passo-corpo">
+        <div class="fluxo">
+          <div class="fluxo-item"><span class="seta">1</span> Admin acessa <code>?p=cad-tarefa</code></div>
+          <div class="fluxo-item"><span class="seta">2</span> Controller verifica se <code>$_SESSION["cargo"] === "admin"</code></div>
+          <div class="fluxo-item"><span class="seta">3</span> Carrega lista de jogadores (<code>UsuarioDao::listar()</code>)</div>
+          <div class="fluxo-item"><span class="seta">4</span> Chama <code>TarefaView::formulario(null, null, $usuarios)</code></div>
+          <div class="fluxo-item"><span class="seta">5</span> Admin preenche formulário e envia (POST)</div>
+          <div class="fluxo-item"><span class="seta">6</span> Controller valida CSRF e sanitiza campos com <code>array_map</code></div>
+          <div class="fluxo-item"><span class="seta">7</span> Cria objeto <code>Tarefa::criar(...)</code> — Model valida os dados</div>
+          <div class="fluxo-item"><span class="seta">8</span> <code>TarefaDao::cadastrar($tarefa)</code> executa INSERT no banco</div>
+          <div class="fluxo-item"><span class="seta">9</span> Redireciona para <code>?p=tarefas</code></div>
+        </div>
+        <pre><code><span class="cmt">// Sanitização de múltiplos campos de uma vez com array_map</span>
+[<span class="var">$titulo</span>, <span class="var">$descricao</span>, <span class="var">$prazo</span>] = <span class="fn">array_map</span>(
+    [Util::class, <span class="str">"preparaTexto"</span>],
+    [<span class="var">$_POST</span>[<span class="str">"titulo"</span>] ?? <span class="str">""</span>, <span class="var">$_POST</span>[<span class="str">"descricao"</span>] ?? <span class="str">""</span>, <span class="var">$_POST</span>[<span class="str">"prazo"</span>] ?? <span class="str">""</span>]
+);</code></pre>
+        <p><code>array_map(função, array)</code> aplica a mesma função a cada elemento do array e retorna o resultado. Aqui aplicamos <code>preparaTexto()</code> nos 3 campos de uma vez.</p>
+      </div>
+    </div>
+
+    <!-- PASSO 10 -->
+    <div class="passo" id="p10">
+      <div class="passo-header">
+        <div class="passo-num">10</div>
+        <div>
+          <div class="passo-titulo">Proteção CSRF — ciclo completo</div>
+          <div class="passo-arquivo">index.php → Views → Controllers</div>
+        </div>
+      </div>
+      <div class="passo-corpo">
+        <div class="fluxo">
+          <div class="fluxo-item"><span class="seta">1</span> <code>index.php</code>: <code>$_SESSION["csrf_token"] = bin2hex(random_bytes(32))</code></div>
+          <div class="fluxo-item"><span class="seta">2</span> View inclui: <code>&lt;input type="hidden" name="csrf" value="..."&gt;</code></div>
+          <div class="fluxo-item"><span class="seta">3</span> Usuário envia formulário — token vai junto no POST</div>
+          <div class="fluxo-item"><span class="seta">4</span> Controller: <code>hash_equals($_SESSION["csrf_token"], $_POST["csrf"])</code></div>
+          <div class="fluxo-item"><span class="seta">5</span> Não bater → <code>die("Falha no acesso")</code></div>
+        </div>
+        <div class="alerta alerta-vermelho">Um site externo que tente enviar um POST para o nosso sistema não terá o token correto — porque o token fica na sessão do usuário no servidor, não no HTML público.</div>
+      </div>
+    </div>
+
+    <!-- PASSO 11 -->
+    <div class="passo" id="p11">
+      <div class="passo-header">
+        <div class="passo-num">11</div>
+        <div>
+          <div class="passo-titulo">Cookie "lembrar-me" — como persiste o login</div>
+          <div class="passo-arquivo">controller/AuthController.php → dal/UsuarioDao.php</div>
+        </div>
+      </div>
+      <div class="passo-corpo">
+        <div class="fluxo">
+          <div class="fluxo-item"><span class="seta">1</span> Login com "lembrar-me" marcado</div>
+          <div class="fluxo-item"><span class="seta">2</span> Gera: <code>$tokenRaw = bin2hex(random_bytes(32))</code> — 64 chars hex aleatórios</div>
+          <div class="fluxo-item"><span class="seta">3</span> Calcula: <code>$hashToken = hash("sha256", $tokenRaw)</code></div>
+          <div class="fluxo-item"><span class="seta">4</span> Salva <code>$hashToken</code> na coluna <code>token_lembrar</code> do banco</div>
+          <div class="fluxo-item"><span class="seta">5</span> Envia <code>$tokenRaw</code> no cookie por 30 dias</div>
+          <div class="fluxo-item"><span class="seta">6</span> Próxima visita: lê cookie → calcula sha256 → busca no banco → loga</div>
+          <div class="fluxo-item"><span class="seta">7</span> Logout: zera o token no banco + apaga o cookie</div>
+        </div>
+        <pre><code><span class="cmt">// setcookie(nome, valor, expira, path, dominio, https, httponly)</span>
+<span class="fn">setcookie</span>(<span class="str">"palmeiras_token"</span>, <span class="var">$tokenRaw</span>, <span class="var">$expira</span>, <span class="str">"/"</span>, <span class="str">""</span>, <span class="kw">false</span>, <span class="kw">true</span>);
+<span class="cmt">//                                                         ↑
+//                                                    httponly=true
+//                             Impede JavaScript de ler o cookie (proteção XSS)</span></code></pre>
+      </div>
+    </div>
+
+    <!-- PASSO 12 -->
+    <div class="passo" id="p12">
+      <div class="passo-header">
+        <div class="passo-num">12</div>
+        <div>
+          <div class="passo-titulo">Recuperação de senha — dois passos com sessão</div>
+          <div class="passo-arquivo">controller/AuthController::recuperar()</div>
+        </div>
+      </div>
+      <div class="passo-corpo">
+        <p>Como não há envio de e-mail, a identidade é provada com <strong>e-mail + CPF + data de nascimento</strong>. O processo usa a sessão como "memória temporária":</p>
+        <div class="fluxo">
+          <div class="fluxo-item"><span class="seta">Etapa 1</span> Usuário entra com e-mail, CPF e nascimento</div>
+          <div class="fluxo-item"><span class="seta">→</span> Controller busca usuário pelo e-mail no banco</div>
+          <div class="fluxo-item"><span class="seta">→</span> Compara CPF e data de nascimento com o cadastro</div>
+          <div class="fluxo-item"><span class="seta">→</span> Se bater: <code>$_SESSION["recuperar_id"] = $usuario->getId()</code></div>
+          <div class="fluxo-item"><span class="seta">→</span> Exibe formulário da Etapa 2 (nova senha)</div>
+          <div class="fluxo-item"><span class="seta">Etapa 2</span> Usuário digita nova senha + confirmação</div>
+          <div class="fluxo-item"><span class="seta">→</span> Controller lê <code>$_SESSION["recuperar_id"]</code> para saber qual usuário</div>
+          <div class="fluxo-item"><span class="seta">→</span> Chama <code>UsuarioDao::atualizarSenha($id, password_hash($nova))</code></div>
+          <div class="fluxo-item"><span class="seta">→</span> Remove <code>recuperar_id</code> da sessão + redireciona ao login</div>
+        </div>
+        <div class="alerta alerta-azul">O <code>$_SESSION["recuperar_id"]</code> funciona como uma "chave temporária" — só existe enquanto a sessão estiver ativa e é removido após o uso, impedindo que o mesmo fluxo seja reutilizado.</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- SEÇÃO PROMPT QUIZ -->
+  <section class="secao" id="quiz-prompt">
+    <h2 class="secao-titulo">Prompt para Gerar o Quiz</h2>
+    <p style="color:#6b7280;font-size:.88rem;margin-bottom:20px">
+      Copie o prompt abaixo e cole em qualquer IA (ChatGPT, Claude, Gemini…). Ela vai gerar um quiz interativo com questões baseadas <strong>exclusivamente</strong> no código deste projeto.
+    </p>
+
+    <div style="background:var(--branco);border:2px solid var(--verde);border-radius:10px;overflow:hidden">
+      <div style="background:var(--verde);padding:12px 20px;display:flex;align-items:center;justify-content:space-between">
+        <span style="color:#fff;font-weight:700;font-size:.9rem">Prompt — cole direto na IA</span>
+        <button id="btn-copiar"
+          onclick="copiarPrompt()"
+          style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.4);color:#fff;
+                 padding:5px 16px;border-radius:20px;cursor:pointer;font-size:.8rem;font-weight:600;
+                 font-family:inherit;transition:.2s">
+          Copiar
+        </button>
+      </div>
+      <pre id="texto-prompt" style="background:#1e1e2e;color:#cdd6f4;margin:0;padding:24px 24px;
+           font-family:'JetBrains Mono',monospace;font-size:.78rem;line-height:1.75;
+           white-space:pre-wrap;word-break:break-word;border-radius:0">Você vai me ajudar a estudar para a defesa oral do meu projeto final de PHP.
+
+Gere um QUIZ interativo com 30 questões de múltipla escolha (4 alternativas cada, apenas uma correta) baseado EXCLUSIVAMENTE no código do projeto descrito abaixo. Não invente conceitos ou tecnologias que não existam nele.
+
+─────────────────────────────────────────────
+DESCRIÇÃO DO PROJETO
+─────────────────────────────────────────────
+Nome: Palmeiras FC — Gerenciador de Tarefas
+Linguagem: PHP 8 (declare strict_types=1)
+Banco: MySQL via PDO (porta 3307, banco "palmeirasdb")
+Servidor: XAMPP (Apache)
+Padrão: MVC com namespaces e autoload
+
+ARQUIVOS E O QUE CADA UM FAZ:
+- index.php: único ponto de entrada. Faz session_start(), session_regenerate_id(true), gera o token CSRF com bin2hex(random_bytes(32)), lê $_GET["p"], controla acesso (público x privado) e roteia com match($page).
+- Autoload.php: spl_autoload_register converte namespace "App\Controller\AuthController" em caminho "controller/AuthController.php" usando str_replace.
+- menu.php: nav condicional — deslogado mostra Home/Notícias/Sobre + botões Entrar/Cadastrar; logado mostra Tarefas + links admin.
+
+NAMESPACES E PASTAS:
+- App\Model\  → model/    (entidades)
+- App\Dal\    → dal/      (acesso ao banco)
+- App\Controller\ → controller/ (lógica)
+- App\View\   → view/     (HTML)
+- App\Util\   → util/     (utilitários)
+
+MODELS (model/):
+- Usuario.php: private __construct(), static criar() com setters privados que validam. setCpf() usa preg_replace('/\D/', '', $cpf) e exige strlen == 11. setCargo() usa in_array() com whitelist ["admin","membro"]. Propriedades: id, nome, email, senha, cpf, dataNascimento, cargo, posicao, tokenLembrar.
+- Tarefa.php: setStatus() valida com in_array() contra ["pendente","em_andamento","concluida"]. Propriedades: id, titulo, descricao, status, prazo, criadoPor, designadoPara.
+- Noticia.php: id, titulo, conteudo, criadoPor, criadoEm.
+
+DAL (dal/):
+- Conn.php: abstract class, singleton PDO. private static ?PDO $conn = null. getConn() cria conexão só na primeira chamada.
+- UsuarioDao.php: abstract class. Métodos static: cadastrar, listar, buscarPorId, buscarPorEmail, buscarPorToken, atualizarToken, atualizarSenha, excluir, editar. Método privado montar(array $d) monta o objeto Usuario a partir do array do banco (DRY). Usa prepare(), bindValue() com PDO::PARAM_STR e PDO::PARAM_INT. fetchAll(PDO::FETCH_ASSOC) no listar, fetch(PDO::FETCH_ASSOC) no buscarPorId/Email.
+- TarefaDao.php: abstract class. editar() e excluir() verificam rowCount() !== 1 para confirmar que o SQL afetou exatamente um registro. cadastrar() retorna (int) $pdo->lastInsertId().
+- NoticiaDao.php: listar(int $limite = 0) monta o LIMIT dinamicamente — se $limite > 0 adiciona " LIMIT " . (int)$limite na query.
+
+CONTROLLERS (controller/):
+- AuthController.php:
+  * login(): verifica $_COOKIE["palmeiras_token"] primeiro (auto-login); valida CSRF com hash_equals($_SESSION["csrf_token"], $_POST["csrf"]); chama password_verify($senha, $hash); em sucesso: session_regenerate_id(true), preenche $_SESSION["id_usuario"], $_SESSION["nome_usuario"], $_SESSION["cargo"]; se "lembrar-me": gera $tokenRaw = bin2hex(random_bytes(32)), salva hash("sha256", $tokenRaw) no banco, envia cookie com setcookie("palmeiras_token", $tokenRaw, time()+2592000, "/", "", false, true).
+  * registrar(): valida CSRF, senha !== confirma, strlen >= 6, password_hash($senha, PASSWORD_ARGON2ID).
+  * recuperar(): 2 etapas via $_SESSION["recuperar_id"]. Etapa 1: valida email+CPF+dataNascimento. Etapa 2: lê $_SESSION["recuperar_id"], chama UsuarioDao::atualizarSenha(), unset($_SESSION["recuperar_id"]).
+  * logout(): UsuarioDao::atualizarToken(id, null), setcookie apaga cookie, $_SESSION = [], session_destroy().
+- TarefaController.php:
+  * listar(): usa usort() com arrow function fn($a,$b) => $a->{$ordem}() <=> $b->{$ordem}() e operador spaceship <=>. Monta $mapaUsuarios [$id => $nome].
+  * cadastrar(): array_map([Util::class, "preparaTexto"], [...]) para sanitizar 3 campos de uma vez.
+  * editar(): admin pode editar tudo; membro só pode atualizar o status da tarefa atribuída a ele — redireciona se designadoPara !== idUsuario.
+  * deletar(): usa listar((int)$_GET["del"]) para confirmação.
+- UsuarioController.php, NoticiaController.php: CRUD completo com CSRF em todos os POSTs.
+
+VIEWS (view/):
+- AuthView.php: formularioLogin, formularioRegistro, formularioRecuperar (parâmetro bool $etapa2 = false).
+- TarefaView.php: listar() mostra coluna Ações para admin (Editar/Excluir) e botão "Atualizar status" para membro nas tarefas atribuídas a ele. formularioStatus() — form com só o select de status, para membros.
+- Todas as views têm <input type="hidden" name="csrf" value="<?= $_SESSION['csrf_token'] ?>"> nos forms.
+- home.php: chama NoticiaDao::listar(3) diretamente. Exibe hero section e últimas 3 notícias em cards.
+
+UTIL (util/):
+- Functions.php: preparaTexto(string $texto): string { return trim(htmlentities($texto)); }
+
+HTML/CSS:
+- Tags semânticas: <header>, <nav>, <main>, <footer>, <section>, <article>, <table> com <thead>/<tbody>/<caption>.
+- Formulários: method="post", campos <input type="text|password|date|hidden|checkbox">, <select>/<option> com selected dinâmico via ternário PHP, <label for="">.
+- CSS Custom Properties em :root: --verde: #006437, --verde-escuro: #004d29, --preto-soft: #1a1a1a, --dourado: #e8c040.
+- Google Fonts via <link>: Barlow Condensed (títulos) + Outfit (corpo).
+- Responsivo com @media query em 900px e 640px.
+
+BANCO (sql/banco.sql):
+- tabela usuarios: id, nome, email (UNIQUE), senha, cpf CHAR(11), data_nascimento DATE, cargo ENUM('admin','membro') DEFAULT 'membro', posicao, token_lembrar VARCHAR(64).
+- tabela tarefas: id, titulo, descricao, status ENUM('pendente','em_andamento','concluida'), prazo DATE, criado_por INT FK, designado_para INT FK.
+- tabela noticias: id, titulo, conteudo, criado_por INT FK, criado_em DATETIME DEFAULT CURRENT_TIMESTAMP.
+
+─────────────────────────────────────────────
+FORMATO DO QUIZ
+─────────────────────────────────────────────
+Distribua as 30 questões assim:
+- 8 questões de PHP básico/funções (isset, session_start, header, match, foreach, array_map, usort, ??)
+- 7 questões de POO (class, abstract, private, static, __construct, Factory Method, encapsulamento, tipos de retorno)
+- 5 questões de PDO/banco (prepare, bindValue, fetchAll, FETCH_ASSOC, rowCount, lastInsertId, SQL Injection)
+- 5 questões de segurança (CSRF, hash_equals, password_hash/verify, ARGON2ID, cookie httponly, session_regenerate_id, XSS/htmlentities)
+- 5 questões de HTML/CSS (tags semânticas, form method, input hidden, label for, select/option, meta charset/viewport, CSS variables)
+
+Para cada questão:
+1. Mostre o número e o enunciado
+2. Mostre as 4 alternativas (A, B, C, D)
+3. Indique claramente qual é a correta e explique em 1-2 frases POR QUE é a correta
+4. Cite o arquivo do projeto onde aquele conceito aparece (ex: "AuthController.php, linha do login")
+
+Nível de dificuldade: 40% fácil, 40% médio, 20% difícil.
+Fácil = definição direta. Médio = "o que acontece se...". Difícil = trecho de código para analisar.
+
+Nas questões difíceis, inclua um trecho de código real do projeto e pergunte o que ele faz, o que retorna, ou o que acontece em determinado cenário.
+
+Comece o quiz agora.</pre>
+    </div>
+
+    <p style="font-size:.8rem;color:#9ca3af;margin-top:12px;text-align:center">
+      Após o quiz, peça: <em>"agora gera mais 20 questões só sobre os trechos de código do projeto"</em> para uma segunda rodada focada em leitura de código.
+    </p>
+  </section>
+
+  <footer>
+    <p>Projeto Final PHP — Palmeiras FC · MVC + PDO + Sessões + Cookies + CSRF</p>
+    <p style="margin-top:4px">RGM 37274261</p>
+  </footer>
+
+</div>
+
+<script>
+function toggle(header) {
+  const body  = header.nextElementSibling;
+  const seta  = header.querySelector('.pergunta-seta');
+  const aberta = body.classList.toggle('aberta');
+  seta.style.transform = aberta ? 'rotate(180deg)' : '';
+}
+
+function copiarPrompt() {
+  const texto = document.getElementById('texto-prompt').innerText;
+  const btn   = document.getElementById('btn-copiar');
+  navigator.clipboard.writeText(texto).then(() => {
+    btn.textContent = '✓ Copiado!';
+    btn.style.background = 'rgba(166,227,161,.3)';
+    setTimeout(() => {
+      btn.textContent = 'Copiar';
+      btn.style.background = 'rgba(255,255,255,.15)';
+    }, 2500);
+  }).catch(() => {
+    // fallback para navegadores sem clipboard API
+    const sel = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(document.getElementById('texto-prompt'));
+    sel.removeAllRanges();
+    sel.addRange(range);
+    btn.textContent = 'Selecione e copie (Ctrl+C)';
+    setTimeout(() => { btn.textContent = 'Copiar'; }, 3000);
+  });
+}
+</script>
+</body>
+</html>
