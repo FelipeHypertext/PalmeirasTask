@@ -20,13 +20,11 @@ $paginasPublicas = ["home", "noticias", "noticia", "sobre", "login", "registro",
 $autenticado     = isset($_SESSION["id_usuario"]);
 $page            = $_GET["p"] ?? "home";
 
-// Usuário não autenticado tentando acessar página privada → redireciona ao login
 if (!$autenticado && !in_array($page, $paginasPublicas)) {
     header("Location: ./?p=login");
     exit;
 }
 
-// Usuário autenticado tentando acessar login/registro/recuperar → redireciona ao home
 if ($autenticado && in_array($page, ["login", "registro", "recuperar"])) {
     header("Location: ./?p=home");
     exit;

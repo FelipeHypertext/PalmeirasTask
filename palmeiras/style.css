@@ -1,9 +1,3 @@
-/* =============================================
-   PALMEIRAS FC — Sistema de Tarefas
-   Identidade visual: Verde #006437 · Preto · Branco · Dourado
-   Tipografia: Barlow Condensed (headings) + Outfit (body)
-   ============================================= */
-
 :root {
     --verde:         #006437;
     --verde-escuro:  #004d29;
@@ -29,7 +23,6 @@
     --trans:         .2s ease;
 }
 
-/* ─── RESET ─── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
@@ -43,7 +36,6 @@ body {
     line-height: 1.6;
 }
 
-/* ─── HEADER ─── */
 header {
     background: var(--preto-soft);
     border-bottom: 3px solid var(--verde);
@@ -62,7 +54,6 @@ header > nav {
     gap: 0;
 }
 
-/* ─── NAV ─── */
 .nav-logo {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 1.35rem;
@@ -105,7 +96,6 @@ header > nav {
 .nav-usuario span { color: #888; font-size: .88rem; white-space: nowrap; }
 .nav-usuario strong { color: var(--branco); }
 
-/* ─── FOOTER ─── */
 footer {
     background: var(--preto-soft);
     color: #555;
@@ -116,7 +106,6 @@ footer {
     font-size: .85rem;
 }
 
-/* ─── MAIN ─── */
 main {
     max-width: 1200px;
     margin: 0 auto;
@@ -125,7 +114,6 @@ main {
     flex: 1;
 }
 
-/* ─── BUTTONS ─── */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -159,7 +147,6 @@ main {
 }
 .btn-sair:hover { background: rgba(255,255,255,.14); color: var(--branco); }
 
-/* ─── PAGE TITLE ─── */
 .page-titulo {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 2rem;
@@ -173,7 +160,6 @@ main {
     line-height: 1.1;
 }
 
-/* ─── HERO ─── */
 .hero {
     background: linear-gradient(135deg, var(--verde-escuro) 0%, var(--preto-soft) 65%);
     color: var(--branco);
@@ -219,7 +205,6 @@ main {
 }
 .hero__acoes { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 
-/* ─── CARDS ─── */
 .card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -259,7 +244,6 @@ main {
     flex: 1;
 }
 
-/* ─── TABELA ─── */
 .tabela-wrapper {
     background: var(--cinza-card);
     border-radius: var(--radius-lg);
@@ -310,7 +294,6 @@ tbody td {
 tbody td:nth-child(2) { text-align: left; }
 .td-acoes { display: flex; gap: 6px; align-items: center; justify-content: center; }
 
-/* ─── BADGES ─── */
 .badge {
     display: inline-block;
     padding: 3px 10px;
@@ -326,7 +309,6 @@ tbody td:nth-child(2) { text-align: left; }
 .badge-admin     { background: var(--verde-escuro); color: var(--dourado); }
 .badge-membro    { background: #f0f0f0; color: #555; }
 
-/* ─── FORMS ─── */
 .form-container {
     background: var(--cinza-card);
     border-radius: var(--radius-lg);
@@ -392,7 +374,6 @@ tbody td:nth-child(2) { text-align: left; }
 }
 .form-obrigatorio { color: var(--vermelho); }
 
-/* ─── AUTH ─── */
 .auth-container {
     max-width: 440px;
     margin: 36px auto;
@@ -451,7 +432,6 @@ tbody td:nth-child(2) { text-align: left; }
     accent-color: var(--verde);
 }
 
-/* ─── ALERTS ─── */
 .alert-box {
     padding: 13px 16px;
     border-radius: var(--radius);
@@ -473,7 +453,6 @@ tbody td:nth-child(2) { text-align: left; }
 }
 .alert-fechar:hover { opacity: 1; }
 
-/* ─── SOBRE ─── */
 .sobre-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -501,7 +480,6 @@ tbody td:nth-child(2) { text-align: left; }
 .sobre-card ul { padding-left: 18px; }
 .sobre-card li { margin-bottom: 4px; }
 
-/* ─── NOTICIA DETALHE ─── */
 .noticia-detalhe {
     background: var(--cinza-card);
     border-radius: var(--radius-lg);
@@ -529,7 +507,6 @@ tbody td:nth-child(2) { text-align: left; }
     font-size: .97rem;
 }
 
-/* ─── EMPTY STATE ─── */
 .empty-state {
     text-align: center;
     padding: 56px 20px;
@@ -543,7 +520,6 @@ tbody td:nth-child(2) { text-align: left; }
     margin-bottom: 6px;
 }
 
-/* ─── 404 ─── */
 .page-404 { text-align: center; padding: 80px 20px; }
 .page-404 h1 {
     font-family: 'Barlow Condensed', sans-serif;
@@ -555,7 +531,6 @@ tbody td:nth-child(2) { text-align: left; }
 }
 .page-404 p { color: var(--cinza-texto); font-size: 1.1rem; margin-bottom: 24px; }
 
-/* ─── RESPONSIVE ─── */
 @media (max-width: 900px) {
     header > nav { flex-wrap: wrap; height: auto; padding: 10px 16px; gap: 6px; }
     .nav-links { flex-wrap: wrap; gap: 2px; order: 3; width: 100%; }

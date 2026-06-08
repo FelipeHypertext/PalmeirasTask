@@ -1,6 +1,3 @@
--- Banco de dados: Palmeiras FC — Gerenciador de Tarefas
--- Projeto Final PHP — MVC + PDO + Sessões + Cookies + CSRF
-
 CREATE DATABASE IF NOT EXISTS palmeirasdb
     CHARACTER SET utf8
     COLLATE utf8_general_ci;
@@ -39,11 +36,3 @@ CREATE TABLE noticias (
     criado_em  DATETIME      DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (criado_por) REFERENCES usuarios(id)
 );
-
--- -------------------------------------------------------
--- Admin padrão — senha: admin123  CPF: 00000000000  nascimento: 1990-01-01
--- Gere o hash rodando: php -r "echo password_hash('admin123', PASSWORD_ARGON2ID);"
--- Depois substitua HASH_AQUI e descomente as linhas abaixo.
--- -------------------------------------------------------
--- INSERT INTO usuarios (nome, email, senha, cpf, data_nascimento, cargo, posicao) VALUES
--- ('Técnico Abel', 'admin@palmeiras.com', 'HASH_AQUI', '00000000000', '1972-10-01', 'admin', 'Técnico');

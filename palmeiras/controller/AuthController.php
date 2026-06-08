@@ -10,11 +10,7 @@ use Exception;
 class AuthController {
     public static ?string $msg = null;
 
-    // ──────────────────────────────────────────────
-    // LOGIN
-    // ──────────────────────────────────────────────
     public static function login(): void {
-        // Verifica cookie "lembrar-me" antes de processar formulário
         if (!isset($_SESSION["id_usuario"]) && isset($_COOKIE["palmeiras_token"])) {
             $hashToken = hash("sha256", $_COOKIE["palmeiras_token"]);
             $usuario   = UsuarioDao::buscarPorToken($hashToken);
@@ -26,7 +22,6 @@ class AuthController {
                 header("Location: ./");
                 exit;
             }
-            // Token inválido: limpa cookie
             setcookie("palmeiras_token", "", time() - 3600, "/");
         }
 
@@ -47,7 +42,6 @@ class AuthController {
                     $_SESSION["nome_usuario"] = $usuario->getNome();
                     $_SESSION["cargo"]        = $usuario->getCargo();
 
-                    // Cookie "lembrar-me" por 30 dias
                     if (isset($_POST["lembrar"]) && $_POST["lembrar"] === "1") {
                         $tokenRaw  = bin2hex(random_bytes(32));
                         $hashToken = hash("sha256", $tokenRaw);
@@ -67,11 +61,7 @@ class AuthController {
 
         AuthView::formularioLogin(self::$msg);
     }
-
-    // ──────────────────────────────────────────────
-    // REGISTRO
-    // ──────────────────────────────────────────────
-    public static function registrar(): void {
+        public static function registrar(): void {
         if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["nome"])) {
             $token = $_POST["csrf"] ?? "";
             if (!isset($_SESSION["csrf_token"]) || !hash_equals($_SESSION["csrf_token"], $token)) {
@@ -104,12 +94,7 @@ class AuthController {
 
         AuthView::formularioRegistro(self::$msg);
     }
-
-    // ──────────────────────────────────────────────
-    // RECUPERAÇÃO DE SENHA
-    // ──────────────────────────────────────────────
-    public static function recuperar(): void {
-        // Etapa 2: usuário foi validado (id na sessão temporária) e define nova senha
+        public static function recuperar(): void {
         if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["nova_senha"])) {
             $token = $_POST["csrf"] ?? "";
             if (!isset($_SESSION["csrf_token"]) || !hash_equals($_SESSION["csrf_token"], $token)) {
@@ -150,7 +135,6 @@ class AuthController {
             }
         }
 
-        // Etapa 1: valida e-mail + CPF + data de nascimento
         if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["email"])) {
             $token = $_POST["csrf"] ?? "";
             if (!isset($_SESSION["csrf_token"]) || !hash_equals($_SESSION["csrf_token"], $token)) {
@@ -177,9 +161,6 @@ class AuthController {
         AuthView::formularioRecuperar(self::$msg, false);
     }
 
-    // ──────────────────────────────────────────────
-    // LOGOUT
-    // ──────────────────────────────────────────────
     public static function logout(): void {
         if (isset($_SESSION["id_usuario"])) {
             UsuarioDao::atualizarToken((int) $_SESSION["id_usuario"], null);

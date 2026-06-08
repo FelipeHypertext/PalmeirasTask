@@ -73,7 +73,6 @@ class TarefaController {
             $tarefa = TarefaDao::buscarPorId((int) $_GET["alt"]);
         }
 
-        // Membro só acessa tarefa atribuída a ele
         if (!$isAdmin) {
             if ($tarefa === null || $tarefa->getDesignadoPara() !== $idUsuario) {
                 header("Location: ./?p=tarefas");
@@ -105,7 +104,6 @@ class TarefaController {
                     self::$msg = $e->getMessage();
                 }
             } else {
-                // Membro: só atualiza o status da tarefa dele
                 $id           = (int) ($_POST["id"] ?? 0);
                 $status       = Util::preparaTexto($_POST["status"] ?? "pendente");
                 $tarefaAtual  = TarefaDao::buscarPorId($id);

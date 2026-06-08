@@ -38,7 +38,6 @@ class Usuario {
         return $usuario;
     }
 
-    // Getters
     public function getId(): ?int          { return $this->id; }
     public function getNome(): string       { return $this->nome; }
     public function getEmail(): string      { return $this->email; }
@@ -49,7 +48,6 @@ class Usuario {
     public function getPosicao(): string    { return $this->posicao; }
     public function getTokenLembrar(): ?string { return $this->tokenLembrar; }
 
-    // Setters com validação
     public function setNome(string $nome): void {
         if ($nome === "") {
             throw new \InvalidArgumentException("O nome é obrigatório.");
